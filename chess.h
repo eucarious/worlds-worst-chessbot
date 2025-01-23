@@ -12,3 +12,12 @@ int piece_color(int piece);
 
 // Palauttaa pelaajan vastustajan.
 int opponent(int player);
+
+struct Piece {
+  // maybe?
+  int _identity;
+  int _color;
+  int _rank;
+  int _file;
+
+};

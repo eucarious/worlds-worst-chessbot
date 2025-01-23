@@ -1,11 +1,12 @@
-#include "shakki.h"
-#include "asema.h"
+#include "chess.h"
+#include "board.h"
 #include <iostream>
+#include <vector>
 
 
 int main() {
 
-    Asema board;
+    Board board;
 
     int a;
     int b;
@@ -18,11 +19,13 @@ int main() {
 
 	std::cout << "\n\n";
 
-    board.clear();
-    board.find_king(bK, a, b);
+    std::vector<Move> help = {};
+    board.knight_raw_moves(2,2, 0, help);
+
+    std::vector<Move> help2 = {};
+    board.king_raw_moves(5,7, 0, help2);
 
     
-    std::cout << a << ", " << b;
 
     return 0;
 
