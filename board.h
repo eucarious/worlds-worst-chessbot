@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 // Pelin tilan kuvaaminen ja siihen liittyvät operaatiot.
 class Board
 {
@@ -30,15 +31,14 @@ public:
 
 	int _doublestep_on_file = -1;
 
-	// LÄKSY
-	// Tyhjentää laudan.
 	void clear() { 
-		for (int rank = RANK_1 ; rank <= RANK_8 ; rank++) { 
-			for (int file = FILE_A ; file <= FILE_H ; file++) { 
+		for (int rank = 0 ; rank < 8 ; rank++) { 
+			for (int file = 0 ; file < 8 ; file++) { 
 				_board[rank][file] = NA;
 			}
 		}
 	};
+
 
 	// Tekee annetun siirron laudalla. Voidaan olettaa, että
 	// siirto on laillinen.
@@ -223,6 +223,7 @@ public:
 	void rook_raw_moves 	( int rank, int file, int player, std::vector<Move>& moves) {
 		check_vertical_moves   (rank, file, player, moves);
 		check_horizontal_moves (rank, file, player, moves);
+
 	};
 
 	void bishop_raw_moves ( int rank, int file, int player, std::vector<Move>& moves) {

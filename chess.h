@@ -14,6 +14,7 @@ enum _FILE { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H };
 // Palauttaa annetun nappulan värin (VALKEA, MUSTA).
 int piece_color(int piece);
 
+
 // Palauttaa pelaajan vastustajan.
 int opponent(int player);
 
@@ -32,4 +33,5 @@ public:
     Piece () {};
 
     virtual void print() {}
+
 };

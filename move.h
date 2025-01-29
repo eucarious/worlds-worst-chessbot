@@ -10,6 +10,7 @@ class Move
 public:
 
   // Oletuskonstruktori (ei tee oikeastaan mitään).
+
 	Move()
 	{}
 
@@ -22,6 +23,7 @@ public:
 	// annetusta merkkijonosta, esim. "e2e4" tai "g8f6".
 	Move(const std::string& s)
     {
+
 		int start;
 		int end;
 		
@@ -37,6 +39,7 @@ public:
 			case 'h': start = FILE_H; break;
 		
 			default: break;
+
 		}
 
 		switch (s.at(2))
@@ -63,7 +66,6 @@ public:
 		_end_file = end;
 
     	move_string = s;
-
 	}
 
 	void move_to_string(int start_rank, int start_file, int end_rank, int end_file) {
@@ -105,8 +107,6 @@ public:
 	};
 
 
-
-
 private:
 
 	int _start_rank; // siirron alkuruudun rivi
@@ -114,6 +114,7 @@ private:
 
 	int _end_rank; // siirron loppuruudun rivi
 	int _end_file; // siirron loppuruudun linja
+
 
 	std::string move_string;
 	
@@ -143,3 +144,4 @@ std::ostream& operator << (std::ostream& out, const Move& m) {
 
 //     return in;
 // }
+
