@@ -20,12 +20,10 @@ int main() {
 	std::cout << "\n\n";
 
     std::vector<Move> help = {};
-    board.knight_raw_moves(2,2, 0, help);
+    board.knight_raw_moves(0, 2, 1, help);
 
-    std::vector<Move> help2 = {};
-    board.king_raw_moves(5,7, 0, help2);
+    std::cout << "\n\n";
 
-    
 
     return 0;
 

@@ -2,6 +2,7 @@
 #include "chess.h"
 #include "move.h"
 #include <iostream>
+#include <string>
 #include <vector>
 
 // Pelin tilan kuvaaminen ja siihen liittyv�t operaatiot.
@@ -59,13 +60,14 @@ public:
 	
 		_board[s._start_rank][s._start_file] = NA;
 		_board[s._end_rank][s._end_file] = piece;
-		
-
+	
 	};
 
+
+// the knight broke agaiiinnn,,,,
 	void knight_raw_moves ( int rank, int file, int player, std::vector<Move>& moves) {
 		// up
-		if (8 > rank - 2 >= 0 && 8 > file - 1 >= 0) {
+		if ( 8 > rank - 2 >= 0 && 8 > file - 1 >= 0) {
 
 				if (_board[rank - 2][file - 1] == NA ) {
 					Move legal_move(index_to_string(rank, file, rank - 2, file - 1));
@@ -636,23 +638,17 @@ public:
 	};
 
 	void print() const { 
-		std::cout << "\n";
+	   std::cout << "\n";
 
-		for (int rank = 0 ; rank < 8 ; rank++) { 
+    for (int rank = 0 ; rank < 8 ; rank++) {  
 
-			for (size_t i = 0; i < 8; i++)
-			{
-				std::cout << "+----";
-			}
-			std::cout << "+";
+      std::cout << "+----+----+----+----+----+----+----+----+\n";
 
-			std::cout << "\n";
-
-			for (int file = 0 ; file < 8 ; file++) { 
+      for (int file = 0 ; file < 8 ; file++) { 
 				
 				std::cout << "|";
 
-				int piece = _board[rank][file];
+				char piece = _board[rank][file];
 				// switch with 13 cases? hell yeah
 				switch (piece)
 				{
@@ -674,19 +670,12 @@ public:
 					std::cout << "SOMETHING'S WRONG IN PRINT!!";
 					break;
 				}
-
-			}
+      }
 			std::cout << "|\n";
-		}
-
-		for (int i = 0; i < 8; i++)
-			{
-				std::cout << "+----";
-			}
-		std::cout << "+";
-
-		std::cout << "\n";
-	};;
+    }
+    
+    std::cout << "+----+----+----+----+----+----+----+----+\n";
+	}
 
 	void find_king(int piece, int& rank, int& file) const { 
 		if (!(piece == wK || piece == bK)) {

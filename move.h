@@ -70,7 +70,7 @@ private:
 
 	int _end_rank; // siirron loppuruudun rivi
 	int _end_file; // siirron loppuruudun linja
-
+	
 	int _promotion_piece = NA; // esim. wQ, wR, bN jne.
 	bool _en_passant = false;
 
