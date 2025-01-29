@@ -5,17 +5,12 @@
 #include <string>
 #include <vector>
 
-// Pelin tilan kuvaaminen ja siihen liittyv�t operaatiot.
+
+// Pelin tilan kuvaaminen ja siihen liittyvät operaatiot.
 class Board
 {
 public:
 
-	// Laudan nappulat. Indeksointi [rivi][linja], esim.
-	//
-	// [0][0] : vasen yl�nurkka ("a8")
-	// [7][0] : vasen alanurkka ("a1")
-	// [7][7] : oikea alanurkka ("h1")
-	//
 	int _board[8][8] = {
 		{ bR, bN, bB, bQ, bK, bB, bN, bR },
 		{ bP, bP, bP, bP, bP, bP, bP, bP },
@@ -25,24 +20,17 @@ public:
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ wP, wP, wP, wP, wP, wP, wP, wP },
 		{ wR, wN, wB, wQ, wK, wB, wN, wR }
-	};
+	}; // flipped in print. the computer keeps an inverse
 
-	// Kumman pelaajan siirtovuoro?
 	int _turn = WHITE;
 
-	// Kirjanpito siitä, onko kuningas tai torni liikkunut.
-	// Asetetaan tarpeen mukaan falseksi.
 	bool _white_short_castle_allowed 	= true;
 	bool _white_long_castle_allowed 	= true;
 	bool _black_short_castle_allowed 	= true;
 	bool _black_long_castle_allowed 	= true;
 
-	// Ohestaly�ntiin tarvittava info. en passant
 	int _doublestep_on_file = -1;
 
-
-	// LÄKSY
-	// Tyhjentää laudan.
 	void clear() { 
 		for (int rank = 0 ; rank < 8 ; rank++) { 
 			for (int file = 0 ; file < 8 ; file++) { 
@@ -51,7 +39,7 @@ public:
 		}
 	};
 
-	
+
 	// Tekee annetun siirron laudalla. Voidaan olettaa, että
 	// siirto on laillinen.
 	void move_piece(const Move& s) {
@@ -63,11 +51,49 @@ public:
 	
 	};
 
+	void print() const { 
+	   std::cout << "\n";
+		// remember: rank 1 is value 7 and rank 8 is 0. because array schtuff
+    	for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) {  
 
-// the knight broke agaiiinnn,,,,
+			std::cout << "+----+----+----+----+----+----+----+----+\n";
+
+			for (int file = FILE_A ; file <= FILE_H ; file++) { 
+					
+				std::cout << "|";
+
+				int piece = _board[rank][file];
+				// switch with 13 cases? hell yeah
+				switch (piece)
+				{
+					case NA: std::cout << "    "; break;
+					case wP: std::cout << " wP "; break;
+					case bP: std::cout << " bP "; break;
+					case wR: std::cout << " wR "; break;
+					case wN: std::cout << " wN "; break;
+					case wB: std::cout << " wB "; break;
+					case wQ: std::cout << " wQ "; break;
+					case wK: std::cout << " wK "; break;
+					case bR: std::cout << " bR "; break;
+					case bN: std::cout << " bN "; break;
+					case bB: std::cout << " bB "; break;
+					case bQ: std::cout << " bQ "; break;
+					case bK: std::cout << " bK "; break;
+
+				default:
+					std::cout << "SOMETHING'S WRONG IN PRINT!!";
+					break;
+				}
+			}
+			std::cout << "|\n";
+    	}
+    	std::cout << "+----+----+----+----+----+----+----+----+\n";
+	}
+
+//* fix. every, darn, move.
 	void knight_raw_moves ( int rank, int file, int player, std::vector<Move>& moves) {
 		// up
-		if ( 8 > rank - 2 >= 0 && 8 > file - 1 >= 0) {
+		if ( 8 > (rank - 2) > -1 && 8 > (file - 1) > -1) {
 
 				if (_board[rank - 2][file - 1] == NA ) {
 					Move legal_move(index_to_string(rank, file, rank - 2, file - 1));
@@ -194,10 +220,10 @@ public:
 
 	};
 
-
 	void rook_raw_moves 	( int rank, int file, int player, std::vector<Move>& moves) {
-		check_vertical_moves	(rank, file, player, moves);
-		check_horizontal_moves(rank, file, player, moves);
+		check_vertical_moves   (rank, file, player, moves);
+		check_horizontal_moves (rank, file, player, moves);
+
 	};
 
 	void bishop_raw_moves ( int rank, int file, int player, std::vector<Move>& moves) {
@@ -636,46 +662,6 @@ public:
 
 		return move;
 	};
-
-	void print() const { 
-	   std::cout << "\n";
-
-    for (int rank = 0 ; rank < 8 ; rank++) {  
-
-      std::cout << "+----+----+----+----+----+----+----+----+\n";
-
-      for (int file = 0 ; file < 8 ; file++) { 
-				
-				std::cout << "|";
-
-				char piece = _board[rank][file];
-				// switch with 13 cases? hell yeah
-				switch (piece)
-				{
-					case NA: std::cout << "    "; break;
-					case wP: std::cout << " wP "; break;
-					case bP: std::cout << " bP "; break;
-					case wR: std::cout << " wR "; break;
-					case wN: std::cout << " wN "; break;
-					case wB: std::cout << " wB "; break;
-				  case wQ: std::cout << " wQ "; break;
-					case wK: std::cout << " wK "; break;
-				  case bR: std::cout << " bR "; break;
-				  case bN: std::cout << " bN "; break;
-					case bB: std::cout << " bB "; break;
-					case bQ: std::cout << " bQ "; break;
-					case bK: std::cout << " bK "; break;
-
-				default:
-					std::cout << "SOMETHING'S WRONG IN PRINT!!";
-					break;
-				}
-      }
-			std::cout << "|\n";
-    }
-    
-    std::cout << "+----+----+----+----+----+----+----+----+\n";
-	}
 
 	void find_king(int piece, int& rank, int& file) const { 
 		if (!(piece == wK || piece == bK)) {
