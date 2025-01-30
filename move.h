@@ -57,13 +57,13 @@ public:
 		}
 		//* add move verifier 
     	_start_rank = s.at(1) - '0';
-		_start_rank = 8 - _start_rank;
-		_start_file = start;
+			_start_rank = 8 - _start_rank;
+			_start_file = start;
 
-		
-		_end_rank = s.at(3) - '0';
-		_end_rank = 8 - _end_rank;
-		_end_file = end;
+			
+			_end_rank = s.at(3) - '0';
+			_end_rank = 8 - _end_rank;
+			_end_file = end;
 
     	move_string = s;
 	}
@@ -83,7 +83,7 @@ public:
 			case FILE_G: move_string += 'g'; break;
 			case FILE_H: move_string += 'h'; break;
 			
-			default: break;
+			default: std::cout << "error in move_to_string. start file"; break;
 		}
 
 		move_string += std::to_string(8 - start_rank);
@@ -99,7 +99,7 @@ public:
 			case FILE_G: move_string += 'g'; break;
 			case FILE_H: move_string += 'h'; break;
 			
-			default: break;
+			default: std::cout << "error in move_to_string. end file"; break;
 		}
 
 		move_string += std::to_string(8 - end_rank);
@@ -135,13 +135,13 @@ std::ostream& operator << (std::ostream& out, const Move& m) {
   return out;
 };
 
-// std::istream & operator >> (std::istream &in, Move &m)
-// {
-//     std::cout << "submit a move in 'a2a4' format";
-//     std::string move_test;
-//     in >> move_test;
-//     //* finish this up
+ std::istream & operator >> (std::istream &in, Move &m)
+ {
+     std::cout << "submit a move in 'a2a4' format: ";
+     std::string move_test;
+     in >> move_test;
+     m = Move(move_test);
 
-//     return in;
-// }
+     return in;
+ }
 
