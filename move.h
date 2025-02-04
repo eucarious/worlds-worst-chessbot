@@ -109,11 +109,11 @@ public:
 
 private:
 
-	int _start_rank; // siirron alkuruudun rivi
-	int _start_file; // siirron alkuruudu linja (eli sarake)
+	int _start_rank;
+	int _start_file;
 
-	int _end_rank; // siirron loppuruudun rivi
-	int _end_file; // siirron loppuruudun linja
+	int _end_rank;
+	int _end_file;
 
 
 	std::string move_string;
@@ -128,6 +128,9 @@ private:
 };
 
 
+
+
+
 // cout and cin operator overiders
 
 std::ostream& operator << (std::ostream& out, const Move& m) {
@@ -135,13 +138,13 @@ std::ostream& operator << (std::ostream& out, const Move& m) {
   return out;
 };
 
- std::istream & operator >> (std::istream &in, Move &m)
- {
+
+// for testing
+std::istream & operator >> (std::istream &in, Move &m) {
      std::cout << "submit a move in 'a2a4' format: ";
      std::string move_test;
      in >> move_test;
      m = Move(move_test);
 
      return in;
- }
-
+};
