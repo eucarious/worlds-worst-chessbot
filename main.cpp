@@ -7,12 +7,14 @@
 int main() {
 
     Board board;
+    int a, b;
 
     std::vector<Move> help = {};
+	std::vector<std::string> pins = {};
 
    while (true) { //* actually give this a break condition. and actually make it work work instead of working if both players strictly follow the move rules.
         board.print();
-        board.get_raw_moves(board._turn, help);
+        board.get_moves(help);
         for (int i = 0 ; i < help.size(); i++) {
             std::cout << help[i] << ", ";
         }
@@ -29,7 +31,8 @@ int main() {
                 std::cout << board._black_sees_squares[rank][file];
             }
             std::cout << std::endl;
-        } 
+        }
+    
 /////////////////////////////////////////////////// THIS IS FOR DEBUGGING ///////////////////////////////////////////////////
 
         Move m;

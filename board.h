@@ -21,11 +21,21 @@ public:
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
-		{ NA, NA, NA, NA, NA, NA, NA, NA },
+		{ NA, NA, bQ, NA, NA, NA, bB, NA },
 		{ wP, wP, wP, wP, wP, wP, wP, wP },
 		{ wR, wN, wB, wQ, wK, wB, wN, wR }
 	};
  
+	//  UNEDITED BOARD FOR U <3
+	//  { bR, bN, bB, bQ, bK, bB, bN, bR },
+	// 	{ bP, bP, bP, bP, bP, bP, bP, bP },
+	// 	{ NA, NA, NA, NA, NA, NA, NA, NA },
+	// 	{ NA, NA, NA, NA, NA, NA, NA, NA },
+	// 	{ NA, NA, NA, NA, NA, NA, NA, NA },
+	// 	{ NA, NA, NA, NA, NA, NA, NA, NA },
+	// 	{ wP, wP, wP, wP, wP, wP, wP, wP },
+	// 	{ wR, wN, wB, wQ, wK, wB, wN, wR }
+
 
 	// ATTACK / DEFEND BOARDS
 	
@@ -360,6 +370,27 @@ public:
 
 		return move;
 	};
+	std::string int_to_file(int file){
+		std::string return_value;
+		switch (file)
+		{
+			case FILE_A: return_value = "a"; break;
+			case FILE_B: return_value = "b"; break;
+			case FILE_C: return_value = "c"; break;
+			case FILE_D: return_value = "d"; break;
+			case FILE_E: return_value = "e"; break;
+			case FILE_F: return_value = "f"; break;
+			case FILE_G: return_value = "g"; break;
+			case FILE_H: return_value = "h"; break;
+			
+			default: break;
+		}
+		return return_value;
+	}
+	std::string int_to_rank(int rank) {
+		return std::to_string(8 - rank);
+	}
+	
 
 	void find_king(int piece, int& rank, int& file) const { 
 		if (!(piece == wK || piece == bK)) {
@@ -381,194 +412,141 @@ public:
 		file = -1;
 	};
 
-	void king_pin_check(int rank, int file, int player, std::vector<Move>& moves) {
+	//* why are these not statements. dude just flip it
+	void king_pin_check(int rank, int file, int player, std::vector<std::string>& pins) {
+		pins.clear();
 		if (player == WHITE) {
 			// north
-			if (!(rank - 1 < RANK_8)) {
-				if (_board[rank - 1][file] < 6) {
-					
+			if (rank - 1 >= RANK_8) {
+				if (_board[rank - 1][file] < 6 && _bR_sees_squares[rank - 1][file] > 0) {
+					pins.push_back(int_to_file(file) + int_to_rank(rank - 1));
 				}
 			}
 
 			// northeast
 			if (!(rank - 1 < RANK_8 || file + 1 > FILE_H)) {
-				_wK_sees_squares[rank - 1][file + 1] += 1;
-				if (_board[rank - 1][file + 1] == NA ) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank - 1][file + 1] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file + 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank - 1][file + 1] < 6 && _bB_sees_squares[rank - 1][file + 1] > 0) {
+					if (rank - 2 >= RANK_8 && file + 2 <= FILE_H  && 
+						(_bB_sees_squares[rank - 2][file + 2] > 0 || _board[rank - 2][file + 2] == bB || _board[rank - 2][file + 2] == bQ)) { 
+						pins.push_back(int_to_file(file + 1) + int_to_rank(rank - 1));
+					}
 				}
+				
 			}
 
 			// east
 			if (!(file + 1 > FILE_H)) {
-				_wK_sees_squares[rank][file + 1] += 1;
-				if (_board[rank][file + 1] == NA ) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank][file + 1] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file + 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank][file + 1] < 6 && _bR_sees_squares[rank][file + 1] > 0) {
+					pins.push_back(int_to_file(file + 1) +int_to_rank(rank));
 				}
 			}
 
 			// southeast
-			if (!(rank + 1 > RANK_1 || file + 1 > FILE_H)) {
-				_wK_sees_squares[rank + 1][file + 1] += 1;
-				if (_board[rank + 1][file + 1] == NA ) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file + 1] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file + 1));
-					moves.push_back(pseudolegal_move);
+			if (rank + 1 <= RANK_1 && file + 1 <= FILE_H) {
+				if (_board[rank + 1][file + 1] < 6 && _bB_sees_squares[rank + 1][file + 1] > 0) {
+					if (rank + 2 <= RANK_1 && file + 2 <= FILE_H && 
+						(_bB_sees_squares[rank + 2][file + 2] > 0 || _board[rank + 2][file + 2] == bB || _board[rank + 2][file + 2] == bQ)) {
+						pins.push_back(int_to_file(file + 1) + int_to_rank(rank + 1));
+					}
 				}
 			}
 
 			// south
 			if (!(rank + 1 > RANK_1)) {
-				_wK_sees_squares[rank + 1][file] += 1;
-				if (_board[rank + 1][file] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank + 1][file] < 6 && _bR_sees_squares[rank + 1][file] > 0) {
+					pins.push_back(int_to_file(file) + int_to_rank(rank + 1));
 				}
 			}
 
 			// southwest
 			if (!(rank + 1 > RANK_1 || file - 1 < FILE_A)) {
-				_wK_sees_squares[rank + 1][file - 1] += 1;
-				if (_board[rank + 1][file - 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file - 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file - 1] >= 6){
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank + 1][file - 1] < 6 && _bB_sees_squares[rank + 1][file - 1] > 0) {
+					if (rank + 2 <= RANK_1 && file - 2 >= FILE_A && 
+						(_bB_sees_squares[rank + 2][file - 2] > 0 || _board[rank + 2][file - 2] == bB || _board[rank + 2][file - 2] == bQ)) {
+						pins.push_back(int_to_file(file - 1) + int_to_rank(rank + 1));
+					}	
 				}
 			}
 
 			// west
 			if (!(file - 1 < FILE_A)) {
-				_wK_sees_squares[rank][file - 1] += 1;
-				if (_board[rank][file - 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file - 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank][file - 1] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank][file - 1] < 6 && _bR_sees_squares[rank][file - 1] > 0) {
+					pins.push_back(int_to_file(file - 1) + int_to_rank(rank));
 				}
 			}
 
 			// northwest
 			if (!(rank - 1 < RANK_8 || file - 1 < FILE_A)) {
-				_wK_sees_squares[rank - 1][file - 1] += 1;
-				if (_board[rank - 1][file - 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file - 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank - 1][file - 1] >= 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank - 1][file - 1] < 6 && _bB_sees_squares[rank - 1][file - 1] > 0) {
+					if (rank - 2 >= RANK_8 && file - 2 >= FILE_A && 
+						(_bB_sees_squares[rank - 2][file - 2] > 0 || _board[rank - 2][file - 2] == bB || _board[rank - 2][file - 2] == bQ)) {
+						pins.push_back(int_to_file(file - 1) + int_to_rank(rank - 1));	
+					}
 				}
 			}
 			
 		} else { ///////////////////////////////////////////////////////////////////////////////////////
 				
+			//* ADD FIXES AND CHECKS FOR BLACK TOO
 				// north
 			if (!(rank - 1 < RANK_8)) {
-				_bK_sees_squares[rank - 1][file] += 1;
-				if (_board[rank - 1][file] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank - 1][file] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank - 1][file] != NA && _board[rank - 1][file] >= 6 && _wR_sees_squares[rank - 1][file] > 0) {
+					pins.push_back(int_to_file(file) + std::to_string(rank));
 				}
+				
 			}
 
 			// northeast
 			if (!(rank - 1 < RANK_8 || file + 1 > FILE_H)) {
-				_bK_sees_squares[rank - 1][file + 1] += 1;
-				if (_board[rank - 1][file + 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank - 1][file + 1] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file + 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank - 1][file + 1] != NA && _board[rank - 1][file + 1] >= 6 && _wB_sees_squares[rank - 1][file + 1] > 0) {
+					
+					pins.push_back(int_to_file(file + 1) + std::to_string(rank));
 				}
+				
 			}
 
 			// east
 			if (!(file + 1 > FILE_H)) {
-				_bK_sees_squares[rank][file + 1] += 1;
-				if (_board[rank][file + 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank][file + 1] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file + 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank][file + 1] != NA && _board[rank][file + 1] >= 6 && _wR_sees_squares[rank][file + 1] > 0) {
+					pins.push_back(int_to_file(file + 1) + std::to_string(rank + 1));
 				}
 			}
 
 			// southeast
 			if (!(rank + 1 > RANK_1 || file + 1 > FILE_H)) {
-				_bK_sees_squares[rank + 1][file + 1] += 1;
-				if (_board[rank + 1][file + 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file + 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file + 1] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file + 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank + 1][file + 1] != NA && _board[rank + 1][file + 1] >= 6 && _wB_sees_squares[rank + 1][file + 1] > 0) {
+					pins.push_back(int_to_file(file + 1) + std::to_string(rank + 2));	
 				}
 			}
 
 			// south
 			if (!(rank + 1 > RANK_1)) {
-				_bK_sees_squares[rank + 1][file] += 1;
-				if (_board[rank + 1][file] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank + 1][file] != NA && _board[rank + 1][file] >= 6 && _wR_sees_squares[rank + 1][file] > 0) {
+					pins.push_back(int_to_file(file) + std::to_string(rank + 2));
 				}
 			}
 
 			// southwest
 			if (!(rank + 1 > RANK_1 || file - 1 < FILE_A)) {
-				_bK_sees_squares[rank + 1][file - 1] += 1;
-				if (_board[rank + 1][file - 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file - 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank + 1][file - 1] < 6){
-					Move pseudolegal_move(index_to_string(rank, file, rank + 1, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank + 1][file - 1] != NA && _board[rank + 1][file - 1] >= 6 && _wB_sees_squares[rank + 1][file - 1] > 0) {
+					pins.push_back(int_to_file(file - 1) + std::to_string(rank + 2));	
 				}
 			}
 
 			// west
 			if (!(file - 1 < FILE_A)) {
-				 if (_board[rank][file - 1] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank][file - 1] != NA && _board[rank][file - 1] >= 6 && _wR_sees_squares[rank][file - 1] > 0) {
+					pins.push_back(int_to_file(file - 1) + std::to_string(rank + 1));
 				}
 			}
 
 			// northwest
 			if (!(rank - 1 < RANK_8 || file - 1 < FILE_A)) {
-				_bK_sees_squares[rank - 1][file - 1] += 1;
-				if (_board[rank - 1][file - 1] == NA) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file - 1));
-					moves.push_back(pseudolegal_move);
-				} else if (_board[rank - 1][file - 1] < 6) {
-					Move pseudolegal_move(index_to_string(rank, file, rank - 1, file - 1));
-					moves.push_back(pseudolegal_move);
+				if (_board[rank - 1][file - 1] != NA && _board[rank - 1][file - 1] >= 6 && _wB_sees_squares[rank - 1][file - 1] > 0) {
+					pins.push_back(int_to_file(file - 1) + std::to_string(rank));	
 				}
 			}
 		}
-
 	};
 
 
@@ -585,13 +563,40 @@ public:
 //* WRITE legal moves list
 
 	void get_moves(std::vector<Move>& moves) {
+
+
 		if (_turn == WHITE) {
+			get_raw_moves(WHITE, moves);
 			find_king(wK, k_rank, k_file);
+			king_pin_check(k_rank, k_file, WHITE, _pinned_squares);
+			for (int i = 0; i < _pinned_squares.size(); i++)
+			{
+				std::cout << _pinned_squares[i] << "  ";
+			}
+			
+			clean_raw_moves(_pinned_squares, moves);
+
 		} else {
 			find_king(bK, k_rank, k_file);
 		}
 	};
 
+		//* DOESNT WORK. REWRITE //////////////////////////////////////////////////////////////////////////
+	void clean_raw_moves(std::vector<std::string>& pins, std::vector<Move>& moves) { 
+		for (int i = 0; i < pins.size(); i++)
+		{
+			std::string pinned_tile = pins[i];
+			for (int i = 0; i < moves.size(); i++)
+			{
+				std::string helper = moves.at(i);
+				
+				if (pinned_tile.compare(0, 2, helper) == 0) {
+					moves.erase(moves.begin()+i);
+
+				}
+			}
+		}
+	}
 
 //* fix all moves to update their own "attacked squares" matrix and for the get raw moves to compile them(?)
 

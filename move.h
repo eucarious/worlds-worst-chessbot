@@ -107,6 +107,10 @@ public:
 	};
 
 
+	operator std::string() const { 
+		return move_string; 
+	};
+
 private:
 
 	int _start_rank;
@@ -148,3 +152,5 @@ std::istream & operator >> (std::istream &in, Move &m) {
 
      return in;
 };
+
+
