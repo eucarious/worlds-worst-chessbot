@@ -370,6 +370,7 @@ public:
 
 		return move;
 	};
+	
 	std::string int_to_file(int file){
 		std::string return_value;
 		switch (file)
@@ -413,6 +414,7 @@ public:
 	};
 
 	//* why are these not statements. dude just flip it
+	// the flip fucked it up. oops
 	void king_pin_check(int rank, int file, int player, std::vector<std::string>& pins) {
 		pins.clear();
 		if (player == WHITE) {
@@ -424,7 +426,7 @@ public:
 			}
 
 			// northeast
-			if (!(rank - 1 < RANK_8 || file + 1 > FILE_H)) {
+			if (rank - 1 >= RANK_8 && file + 1 <= FILE_H) {
 				if (_board[rank - 1][file + 1] < 6 && _bB_sees_squares[rank - 1][file + 1] > 0) {
 					if (rank - 2 >= RANK_8 && file + 2 <= FILE_H  && 
 						(_bB_sees_squares[rank - 2][file + 2] > 0 || _board[rank - 2][file + 2] == bB || _board[rank - 2][file + 2] == bQ)) { 
@@ -435,7 +437,7 @@ public:
 			}
 
 			// east
-			if (!(file + 1 > FILE_H)) {
+			if (file + 1 <= FILE_H) {
 				if (_board[rank][file + 1] < 6 && _bR_sees_squares[rank][file + 1] > 0) {
 					pins.push_back(int_to_file(file + 1) +int_to_rank(rank));
 				}
@@ -452,14 +454,14 @@ public:
 			}
 
 			// south
-			if (!(rank + 1 > RANK_1)) {
+			if (rank + 1 <= RANK_1) {
 				if (_board[rank + 1][file] < 6 && _bR_sees_squares[rank + 1][file] > 0) {
 					pins.push_back(int_to_file(file) + int_to_rank(rank + 1));
 				}
 			}
 
 			// southwest
-			if (!(rank + 1 > RANK_1 || file - 1 < FILE_A)) {
+			if (rank + 1 <= RANK_1 && file - 1 >= FILE_A) {
 				if (_board[rank + 1][file - 1] < 6 && _bB_sees_squares[rank + 1][file - 1] > 0) {
 					if (rank + 2 <= RANK_1 && file - 2 >= FILE_A && 
 						(_bB_sees_squares[rank + 2][file - 2] > 0 || _board[rank + 2][file - 2] == bB || _board[rank + 2][file - 2] == bQ)) {
@@ -469,14 +471,14 @@ public:
 			}
 
 			// west
-			if (!(file - 1 < FILE_A)) {
+			if (file - 1 >= FILE_A) {
 				if (_board[rank][file - 1] < 6 && _bR_sees_squares[rank][file - 1] > 0) {
 					pins.push_back(int_to_file(file - 1) + int_to_rank(rank));
 				}
 			}
 
 			// northwest
-			if (!(rank - 1 < RANK_8 || file - 1 < FILE_A)) {
+			if (rank - 1 >= RANK_8 && file - 1 >= FILE_A) {
 				if (_board[rank - 1][file - 1] < 6 && _bB_sees_squares[rank - 1][file - 1] > 0) {
 					if (rank - 2 >= RANK_8 && file - 2 >= FILE_A && 
 						(_bB_sees_squares[rank - 2][file - 2] > 0 || _board[rank - 2][file - 2] == bB || _board[rank - 2][file - 2] == bQ)) {

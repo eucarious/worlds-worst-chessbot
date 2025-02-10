@@ -26,7 +26,7 @@ public:
 
 		int start;
 		int end;
-		
+		// minus a from the char gives you the number
 		switch (s.at(0))
 		{
 			case 'a': start = FILE_A; break;
