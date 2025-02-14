@@ -581,19 +581,21 @@ public:
 		}
 	};
 
-		//* DOESNT WORK. REWRITE //////////////////////////////////////////////////////////////////////////
+		//* works, but removes eat moves too. rewrite //////////////////////////////////////////////////////////////////////////
 	void clean_raw_moves(std::vector<std::string>& pins, std::vector<Move>& moves) { 
 		for (int i = 0; i < pins.size(); i++)
 		{
 			std::string pinned_tile = pins[i];
 			for (int i = 0; i < moves.size(); i++)
 			{
-				std::string helper = moves.at(i);
-				
-				if (pinned_tile.compare(0, 2, helper) == 0) {
+				std::string helper2;
+				std::string helper = moves[i].move_string;
+				helper2 = helper.substr(0,2);
+				std::cout << helper2;
+				if (pinned_tile.compare(0, 2, helper2) == 0) {
 					moves.erase(moves.begin()+i);
-
-				}
+					i--;
+				} 
 			}
 		}
 	}
