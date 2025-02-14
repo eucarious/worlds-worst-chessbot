@@ -9,7 +9,7 @@ int main() {
     main_board.set_up_board();
     std::vector<Move> help = {};
 
-    while(true) {
+    while(main_board.playing) {
         Move m;
         main_board.get_moves(help);
         main_board.print();

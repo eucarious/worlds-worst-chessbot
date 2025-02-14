@@ -13,6 +13,7 @@ public:
 	bool _in_check = false;
 
   int _turn = WHITE;
+	bool playing = true;
 
   bool _wKK_castle_allowed = true;
   bool _wKQ_castle_allowed = true;
@@ -22,9 +23,8 @@ public:
   int _doublestep_on_file = -1;
 
 
-
   //* don't forget Threefold Repetition (same check 3 times)
-  //  Dead Position
+  //  Dead Position (probably not possible to do)
   //  int _50_move_rule = 0;
   //  we have an arbiter. we'll be fine if we dont hardcode draw rules (except stalemate)
 
@@ -99,6 +99,7 @@ public:
     _wK_file = FILE_E;
 
 		update_all_ad();
+		playing = true;
   }
 
   void print() const { 
@@ -253,6 +254,72 @@ public:
 	};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+// EVALUATION FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// call when no valid moves are left
+// WHITE checkmate 	10000000
+// DRAW  						0
+// BLACK checkmate -10000000
+int evaluate_result() const {
+	if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
+		return -10000000;
+	}
+	if (_white_sees_squares[_bK_rank][_bK_file] >= 1) {
+		return  10000000;
+	}
+	return 0;
+}
+
+float evaluate() const {
+	return (1.0f * material() + 0.5f * position());
+}
+
+float material() const {
+	float material_result;
+	for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) {  
+		for (int file = FILE_A ; file <= FILE_H ; file++) { 
+
+			int piece = _board[rank][file];
+			// switch with 13 cases? hell yeah
+			switch (piece)
+			{
+				case NA: break;
+				case wP: material_result += PAWN_VAL; break;
+				case bP: material_result -= PAWN_VAL; break;
+				case wR: material_result += ROOK_VAL; break;
+				case wN: material_result += KNIGHT_VAL; break;
+				case wB: material_result += BISHOP_VAL; break;
+				case wQ: material_result += QUEEN_VAL; break;
+				case wK: break;
+				case bR: material_result -= ROOK_VAL; break;
+				case bN: material_result -= KNIGHT_VAL; break;
+				case bB: material_result -= BISHOP_VAL; break;
+				case bQ: material_result -= QUEEN_VAL; break;
+				case bK: break;
+
+			default:
+				std::cout << "SOMETHING'S WRONG IN MATERIAL!!";
+				break;
+			}
+		}
+	}
+	return material_result;
+}
+
+// sliiightly misleading name. just checks how much vision the pieces have on the board
+// (goes through both ad maps and returns the difference as one float)
+float position() const {
+	float position_result;
+	for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) {  
+		for (int file = FILE_A ; file <= FILE_H ; file++) { 
+			position_result += _white_sees_squares[rank][file] - _black_sees_squares[rank][file];
+		}
+	}
+	return position_result;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MISCELLANEOUS METHODS AND STUFF I HAVEN'T GROUPED //////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -280,10 +347,6 @@ public:
 
 
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MOVE RELATED METHODS SUCH AS PROMOTION OR FINDING ALL LEGAL MOVES //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,9 +357,37 @@ public:
 			Board new_board = *this;
 			new_board.make_move(moves[i]);
 			new_board.update_all_ad();
+			
+			// add check and en passant moves here
+			
 			if (new_board.is_in_check()) {
 				moves.erase(moves.begin() + i);
 				i--;
+			}
+
+			if(moves.empty()){
+				//* enter code here
+				playing = false;
+				int result = evaluate_result();
+				if (result > 0) {
+					std::cout << "\n\n";
+					std::cout << "//////////////////" << "\n";
+					std::cout << "//  WHITE WINS  //" << "\n";
+					std::cout << "//////////////////" << "\n\n";
+					return;
+				}
+				if (result < 0) {
+					std::cout << "\n\n";
+					std::cout << "//////////////////" << "\n";
+					std::cout << "//  BLACK WINS  //" << "\n";
+					std::cout << "//////////////////" << "\n\n";
+					return;
+				}
+				std::cout << "\n\n";
+				std::cout << "//////////////////" << "\n";
+				std::cout << "//     DRAW     //" << "\n";
+				std::cout << "//////////////////" << "\n\n";
+				return;
 			}
 		}
 	}
