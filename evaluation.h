@@ -19,12 +19,11 @@ private:
   float _value;
   Move _move;
 public:
-  MinimaxValue(/* args */);
+  MinimaxValue(float value, Move move);
   ~MinimaxValue();
 };
 
-MinimaxValue::MinimaxValue(float value, Move move) :
-
+MinimaxValue::MinimaxValue(float value, Move move) : _value(value), _move(move)
 {
 }
 

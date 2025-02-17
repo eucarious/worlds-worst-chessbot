@@ -8,19 +8,33 @@
 
 class Board {
 public:
-
+	// king related variables
   int _wK_rank, _wK_file, _bK_rank, _bK_file;
 	bool _in_check = false;
 
+	// game control
   int _turn = WHITE;
 	bool playing = true;
 
-  bool _wKK_castle_allowed = true;
-  bool _wKQ_castle_allowed = true;
-  bool _bKK_castle_allowed = true;
-  bool _bKQ_castle_allowed = true;
+	// castling variables
+	bool _white_castling_allowed = true;
+	bool _wRA_moved = false;
+	bool _wRH_moved = false;
 
+  bool _wKK_castle_allowed = false;
+  bool _wKQ_castle_allowed = false;
+
+	bool _black_castling_allowed = true;
+	bool _bRA_moved = false;
+	bool _bRH_moved = false;
+
+	bool _bKK_castle_allowed = false;
+  bool _bKQ_castle_allowed = false;
+
+	// en passant //* 
   int _doublestep_on_file = -1;
+
+	std::vector<Move> legal_moves;
 
 
   //* don't forget Threefold Repetition (same check 3 times)
@@ -193,23 +207,20 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // playing a move (with verification)
-	void make_move(const Move& s) {
+	void make_move(Move& s) {
 
-		int piece = _board[s._start_rank][s._start_file];
-		int player;
-		if (piece < 6) {
-			player = WHITE;
-		} else if (piece > 6) {
-			player = BLACK;
-		} else {
-			std::cout << "Moving empty space"; // shouldnt ever run
-			return;
+		bool legal = false;
+		for (int i = 0 ; i < legal_moves.size(); i++) {
+			if (legal) {break;}
+
+			if (s.move_string == legal_moves.at(i).move_string) {
+				legal = true;
+				s._promotion = legal_moves.at(i)._promotion;
+			}
 		}
-
-		if (_turn == player) {
-
-			//* add move verification
-			
+		
+		if (legal) {
+			int piece = _board[s._start_rank][s._start_file];
 			_board[s._start_rank][s._start_file] = NA;
 			_board[s._end_rank][s._end_file] = piece;
 
@@ -217,19 +228,80 @@ public:
 				_wK_rank = s._end_rank;
 				_wK_file = s._end_file;
 			}
+			if ( s.move_string == "e1g1") {
+				std::cout << "white castled, kingside"; 
+				_board[RANK_1][FILE_H] = NA;
+				_board[RANK_1][FILE_F] = wR;
+			}
+			if ( s.move_string == "e1c1") {
+				std::cout << "white castled, queenside"; 
+				_board[RANK_1][FILE_A] = NA;
+				_board[RANK_1][FILE_D] = wR;
+			}
+			
+
 			if (piece == bK) {
 				_bK_rank = s._end_rank;
 				_bK_file = s._end_file;
 			}
-			if (player == WHITE) { 
+			if (s.move_string == "e8g8") {
+				std::cout << "black castled, kingside"; 
+				_board[RANK_8][FILE_H] = NA;
+				_board[RANK_8][FILE_F] = bR;
+			}
+			if (s.move_string == "e8c8") {
+				std::cout << "black castled, queenside"; 
+				_board[RANK_8][FILE_A] = NA;
+				_board[RANK_8][FILE_D] = bR;
+			}
+
+			if (s._promotion) {
+				std::string promotion_selection;
+				std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop";
+				std::cin >> promotion_selection;
+
+				// QUEEN
+				if (promotion_selection == "q" || promotion_selection == "Q") {
+					if (s._end_rank == RANK_8){
+						_board[s._end_rank][s._end_file] = wQ;
+					} else {
+						_board[s._end_rank][s._end_file] = bQ;
+					}
+				}
+				// KNIGHT
+				if (promotion_selection == "k" || promotion_selection == "K") {
+					if (s._end_rank == RANK_8){
+						_board[s._end_rank][s._end_file] = wK;
+					} else {
+						_board[s._end_rank][s._end_file] = bK;
+					}
+				}
+				// ROOK
+				if (promotion_selection == "r" || promotion_selection == "R") {
+					if (s._end_rank == RANK_8){
+						_board[s._end_rank][s._end_file] = wR;
+					} else {
+						_board[s._end_rank][s._end_file] = bR;
+					}
+				}
+				// BISHOP
+				if (promotion_selection == "b" || promotion_selection == "B") {
+					if (s._end_rank == RANK_8){
+						_board[s._end_rank][s._end_file] = wB;
+					} else {
+						_board[s._end_rank][s._end_file] = bB;
+					}
+				}
+			}
+
+			if (_turn == WHITE) { 
 				update_white_ad();
-				_turn = BLACK;} 
-			if (player == BLACK) { 
+				_turn = BLACK;
+			} else if (_turn == BLACK) { 
 				update_black_ad();
-				_turn = WHITE;}
-		} else {
-			std::cout << "Not " << player << "'s turn (0 white, 1, black)";
-		}
+				_turn = WHITE;
+			}
+		} 
 	};
 
 
@@ -353,6 +425,7 @@ float position() const {
 
 	void get_moves(std::vector<Move>& moves) {
 		get_raw_moves(moves);
+
 		for (int i = 0 ; i < moves.size(); i++) {
 			Board new_board = *this;
 			new_board.make_move(moves[i]);
@@ -364,32 +437,56 @@ float position() const {
 				moves.erase(moves.begin() + i);
 				i--;
 			}
+		}
 
-			if(moves.empty()){
-				//* enter code here
-				playing = false;
-				int result = evaluate_result();
-				if (result > 0) {
-					std::cout << "\n\n";
-					std::cout << "//////////////////" << "\n";
-					std::cout << "//  WHITE WINS  //" << "\n";
-					std::cout << "//////////////////" << "\n\n";
-					return;
+		if (_turn == WHITE) {
+			if (_white_castling_allowed) {	
+				white_castle_check();
+				if (_wKK_castle_allowed) {
+					moves.push_back(Move("e1g1"));
 				}
-				if (result < 0) {
-					std::cout << "\n\n";
-					std::cout << "//////////////////" << "\n";
-					std::cout << "//  BLACK WINS  //" << "\n";
-					std::cout << "//////////////////" << "\n\n";
-					return;
+				if (_wKQ_castle_allowed) {
+					moves.push_back(Move("e1c1"));
 				}
+			}
+		} else {
+			if (_black_castling_allowed) {	
+				black_castle_check();
+				if (_bKK_castle_allowed) {
+					moves.push_back(Move("e8g8"));
+				}
+				if (_bKQ_castle_allowed) {
+					moves.push_back(Move("e8c8"));
+				}
+			} 
+		}
+
+		// check for (stale)mate
+		if(moves.empty()){
+			playing = false;
+			int result = evaluate_result();
+			if (result > 0) {
 				std::cout << "\n\n";
 				std::cout << "//////////////////" << "\n";
-				std::cout << "//     DRAW     //" << "\n";
+				std::cout << "//  WHITE WINS  //" << "\n";
 				std::cout << "//////////////////" << "\n\n";
 				return;
 			}
+			if (result < 0) {
+				std::cout << "\n\n";
+				std::cout << "//////////////////" << "\n";
+				std::cout << "//  BLACK WINS  //" << "\n";
+				std::cout << "//////////////////" << "\n\n";
+				return;
+			}
+			std::cout << "\n\n";
+			std::cout << "//////////////////" << "\n";
+			std::cout << "//     DRAW     //" << "\n";
+			std::cout << "//////////////////" << "\n\n";
+			return;
 		}
+
+		legal_moves = moves; 
 	}
 
 // if (_bKK_castle_allowed || _bKQ_castle_allowed) {
@@ -475,42 +572,117 @@ float position() const {
 
 
 	// castling //*
+
+	void white_castle_check(){
+		// early termination ilu
+
+		// check if the pieces are in the right spots
+		if (_board[RANK_1][FILE_E] != wK) {
+			_white_castling_allowed = false;
+			return;
+		}
+
+		if (_board[RANK_1][FILE_H] != wR) {
+			_wKK_castle_allowed = false;
+			_wRH_moved = true;
+		}
+		if (_board[RANK_1][FILE_A] != wR) {
+			_wKQ_castle_allowed = false;
+			_wRA_moved = true;
+		}
+
+		// check for check
+		if (_black_sees_squares[RANK_1][FILE_E] >= 1) {
+			_wKK_castle_allowed = false;
+			_wKQ_castle_allowed = false;
+			return;
+		}
+
+		// check if both rooks have been moved before
+		if (_wRA_moved && _wRH_moved) {
+			_white_castling_allowed = false;
+			return;
+		}
+	
+		// kingside
+		if (_board[RANK_1][FILE_E] == wK && _board[RANK_1][FILE_H] == wR) {
+			if (_board[RANK_1][FILE_F] == NA && _board[RANK_1][FILE_G] == NA 
+				&& _black_sees_squares[RANK_1][FILE_F] == 0 
+				&& _black_sees_squares[RANK_1][FILE_G] == 0 ) {
+				_wKK_castle_allowed = true;
+			} else {
+				_wKK_castle_allowed = false;
+			}
+		}
+
+		// queenside
+		if (_board[RANK_1][FILE_E] == wK && _board[RANK_1][FILE_A] == wR) {
+			if (_board[RANK_1][FILE_B] == NA && _board[RANK_1][FILE_C] == NA && _board[RANK_8][FILE_D] == NA 
+				&& _black_sees_squares[RANK_1][FILE_C] == 0 
+				&& _black_sees_squares[RANK_1][FILE_D] == 0 ) {
+				_wKQ_castle_allowed = true;
+			} else {
+				_wKQ_castle_allowed = false;
+			}
+		}
+
+	}
+
 	void black_castle_check(){
 		// early termination ilu
 
+		// check if the pieces are in the right spots
 		if (_board[RANK_8][FILE_E] != bK) {
-			_bKK_castle_allowed = false;
-			_bKQ_castle_allowed = false;
+			_black_castling_allowed = false;
 			return;
 		}
 
 		if (_board[RANK_8][FILE_H] != bR) {
 			_bKK_castle_allowed = false;
+			_bRH_moved = true;
 		}
 		if (_board[RANK_8][FILE_A] != bR) {
 			_bKQ_castle_allowed = false;
+			_bRA_moved = true;
 		}
 
-		bKK_castle_check();
+		// check for check
+		if (_white_sees_squares[RANK_8][FILE_E] >= 1) {
+			_bKK_castle_allowed = false;
+			_bKQ_castle_allowed = false;
+			return;
+		}
 
-	}
-
-	void bKK_castle_check() {
-		if (_bKK_castle_allowed) {
-			if (_board[RANK_8][FILE_E] == bK && _board[RANK_8][FILE_H] == bR) {
-				if (_white_sees_squares[RANK_8][FILE_E] >= 1 ) {
-				// if king is in check, he cannot castle
-				// will also remove all future castle opportunities so we set both castles to false
-				_bKK_castle_allowed = false;
-				_bKQ_castle_allowed = false;
-					return;
-				}
-				
+		// check if both rooks have been moved before
+		if (_bRA_moved && _bRH_moved) {
+			_black_castling_allowed = false;
+			return;
+		}
+	
+		// kingside
+		if (_board[RANK_8][FILE_E] == bK && _board[RANK_8][FILE_H] == bR) {
+			if (_board[RANK_8][FILE_F] == NA && _board[RANK_8][FILE_G] == NA 
+				&& _white_sees_squares[RANK_8][FILE_F] == 0 
+				&& _white_sees_squares[RANK_8][FILE_G] == 0 ) {
+				_bKK_castle_allowed = true;
 			} else {
 				_bKK_castle_allowed = false;
 			}
 		}
+
+		// queenside
+		if (_board[RANK_8][FILE_E] == bK && _board[RANK_8][FILE_A] == bR) {
+			if (_board[RANK_8][FILE_B] == NA && _board[RANK_8][FILE_C] == NA && _board[RANK_8][FILE_D] == NA 
+				&& _white_sees_squares[RANK_8][FILE_C] == 0 
+				&& _white_sees_squares[RANK_8][FILE_D] == 0 ) {
+				_bKQ_castle_allowed = true;
+			} else {
+				_bKQ_castle_allowed = false;
+			}
+		}
+
 	}
+
 
 
 // stick this at the bottom because it is so damn long
@@ -520,7 +692,6 @@ float position() const {
 // MOVES ARE IN THE FOLLOWING ORDER: QUEEN, ROOK, BISHOP, KING, KNIGHT, PAWN
 
 
-//* ad map update all
   void update_all_ad() {
 		clear_white_ad();
 		clear_black_ad();
@@ -1613,12 +1784,13 @@ float position() const {
 
 	// for White pawns
 	void check_up(int rank, int file, std::vector<Move>& moves) {
-	  if (rank - 1 < RANK_8 ) return;
-
 		if (_board[rank - 1][file] == NA) {
 			Move pseudo_move(rank, file, rank - 1, file);
+			if (rank - 1 == RANK_8) {
+				pseudo_move._promotion = true;
+			}
 			moves.push_back(pseudo_move);
-
+			
 			if (_board[rank - 2][file] == NA && rank == RANK_2) {
 				Move pseudo_move(rank, file, rank - 2, file);
 				moves.push_back(pseudo_move);
@@ -1629,12 +1801,13 @@ float position() const {
 
 	// for White pawns
 	void check_up_diagonal(int rank, int file, std::vector<Move>& moves) {
-		if (rank - 1 < RANK_8 ) return; // shouldnt ever happen since pawns MUST promote
-		
 		// northeast
 		if (file + 1 <= FILE_H ) {
 			if (_board[rank - 1][file + 1] != NA && _board[rank - 1][file + 1] > 6 ) {
 				Move pseudo_move(rank, file, rank - 1, file + 1);
+				if (rank - 1 == RANK_8) {
+					pseudo_move._promotion = true;
+				}
 				moves.push_back(pseudo_move);
 			}
 		}
@@ -1642,6 +1815,9 @@ float position() const {
 		if (file - 1 >= FILE_A) { 
 			if (_board[rank - 1][file - 1] != NA && _board[rank - 1][file - 1] > 6) {
 				Move pseudo_move(rank, file, rank - 1, file - 1);
+				if (rank - 1 == RANK_8) {
+					pseudo_move._promotion = true;
+				}
 				moves.push_back(pseudo_move);
 			}
 		}
@@ -1649,10 +1825,12 @@ float position() const {
 	
 	// for Black pawns.
 	void check_down(int rank, int file, std::vector<Move>& moves) {
-	  if (rank + 1 > RANK_1) return;
-			
+
 		if (_board[rank + 1][file] == NA) {
 			Move pseudo_move(rank, file, rank + 1, file);
+			if (rank + 1 == RANK_1) {
+				pseudo_move._promotion = true;
+			}
 			moves.push_back(pseudo_move);
 
 			if (_board[rank + 2][file] == NA && rank == RANK_7) {
@@ -1665,11 +1843,13 @@ float position() const {
 
 	// for Black pawns
 	void check_down_diagonal(int rank, int file, std::vector<Move>& moves) {
-		if (rank + 1 > RANK_1) return;
 		if (file + 1 <= FILE_H) { 
 			// southeast
 			if (_board[rank + 1][file + 1] != NA && _board[rank + 1][file + 1] < 6) {
 				Move pseudo_move(rank, file, rank + 1, file + 1);
+				if (rank + 1 == RANK_1) {
+					pseudo_move._promotion = true;
+				}
 				moves.push_back(pseudo_move);
 			}
 		}
@@ -1678,6 +1858,9 @@ float position() const {
 			// southwest
 			if (_board[rank + 1][file - 1] != NA && _board[rank + 1][file - 1] < 6) {
 				Move pseudo_move(rank, file, rank + 1, file - 1);
+				if (rank + 1 == RANK_1) {
+					pseudo_move._promotion = true;
+				}
 				moves.push_back(pseudo_move);
 			}	
 		}

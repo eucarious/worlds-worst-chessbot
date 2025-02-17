@@ -13,19 +13,22 @@ int main() {
         Move m;
         main_board.get_moves(help);
         main_board.print();
+        if (help.empty()) {break;}
 
-        std::cout << "\n\n" ;
-        std::cout << " WHITE             BLACK \n" ;
-        for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
-            for (int file = FILE_A ; file <= FILE_H ; file++) {
-                std::cout << main_board._white_sees_squares[rank][file];
-            }
-            std::cout << "          ";
-            for (int file = FILE_A ; file <= FILE_H ; file++) {
-                std::cout << main_board._black_sees_squares[rank][file];
-            }
-            std::cout << std::endl;
-        }
+////////////////////////////////////////// DEBUGGING STUFF //////////////////////////////////////////
+        // std::cout << "\n\n" ;
+        // std::cout << " WHITE             BLACK \n" ;
+        // for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
+        //     for (int file = FILE_A ; file <= FILE_H ; file++) {
+        //         std::cout << main_board._white_sees_squares[rank][file];
+        //     }
+        //     std::cout << "          ";
+        //     for (int file = FILE_A ; file <= FILE_H ; file++) {
+        //         std::cout << main_board._black_sees_squares[rank][file];
+        //     }
+        //     std::cout << std::endl;
+        // }
+/////////////////////////////////////// END OF DEBUGGING STUFF //////////////////////////////////////
 
         for (int i = 0 ; i < help.size(); i++) {
             std::cout << help[i] << ", ";

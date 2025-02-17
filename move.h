@@ -11,10 +11,10 @@ private:
 	int _end_rank;
 	int _end_file;
 
-
 	std::string move_string;
 	
-	int _promotion_piece = NA; // esim. wQ, wR, bN jne.
+	bool _promotion = false;
+	
 	bool _en_passant = false;
 
   friend class Board;
