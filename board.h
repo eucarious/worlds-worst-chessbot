@@ -6,6 +6,7 @@
 #include "move.h"
 #include "evaluation.h"
 
+#define en_passant_tile 20
 class Board {
 public:
 	// king related variables
@@ -49,12 +50,12 @@ public:
 
   int _board[8][8] = {
 		{ bR, bN, bB, bQ, bK, bB, bN, bR },
-		{ bP, bP, bP, bP, bP, bP, bP, bP },
+		{ bP, bP, bP, bP, bP, bP, wP, bP },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, wK, bB, NA },
-		{ wP, wP, wP, wP, wP, wP, wP, wP },
+		{ wP, wP, wP, wP, wP, wP, bP, wP },
 		{ wR, wN, wB, wQ, wK, wB, wN, wR }
 	};
 
@@ -68,45 +69,6 @@ public:
 	// 	{ wP, wP, wP, wP, wP, wP, wP, wP },
 	// 	{ wR, wN, wB, wQ, wK, wB, wN, wR }
 
-	void test_board() {
-    clear_board();
-		clear_black_ad();
-		clear_white_ad();
-
-    _board[RANK_8][FILE_A] = bR;
-    _board[RANK_8][FILE_B] = bN;
-    _board[RANK_8][FILE_C] = wQ;
-    _board[RANK_8][FILE_D] = bQ;
-    _board[RANK_8][FILE_E] = bK;
-    _board[RANK_8][FILE_F] = bB;
-    _board[RANK_8][FILE_G] = bN;
-    _board[RANK_8][FILE_H] = bR;
-    for (int i = FILE_A; i <= FILE_H; i++) {
-      _board[RANK_7][i] = bP;
-    }
-
-    _bK_rank = RANK_8;
-    _bK_file = FILE_E;
-
-    _board[RANK_1][FILE_A] = wR;
-    _board[RANK_1][FILE_B] = wN;
-    _board[RANK_1][FILE_C] = wB;
-    _board[RANK_1][FILE_D] = wQ;
-    _board[RANK_1][FILE_E] = wK;
-    _board[RANK_1][FILE_F] = wB;
-    _board[RANK_1][FILE_G] = bQ;
-    _board[RANK_1][FILE_H] = wR;
-    for (int i = FILE_A; i <= FILE_H; i++) {
-      _board[RANK_2][i] = wP;
-    }
-    _wK_rank = RANK_1;
-    _wK_file = FILE_E;
-
-		update_all_ad();
-		playing = true;
-  }
-
-
   void clear_board() {
     for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
 			for (int file = FILE_A ; file <= FILE_H ; file++) { 
@@ -115,7 +77,11 @@ public:
 		}
     _wK_rank, _wK_file, _bK_rank, _bK_file = -1;
   }
-
+	void set_up_boardless() { 
+		update_all_ad();
+		find_kings();
+		playing = true;
+	}
   void set_up_board() {
     clear_board();
 		clear_black_ad();
@@ -244,24 +210,25 @@ public:
 // PLAYING THE DAMN GAME //////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// playing a move (with verification)
-	void make_move(Move& s) {
+
+// i cant get verification to work, haha. :,)
+// fixed...? 
+// not designed to handle 0-0 or 0-0-0 inputs
+	void player_move(Move& s) {
 
 		bool legal = false;
 		for (int i = 0 ; i < legal_moves.size(); i++) {
 			if (legal) {break;}
-
 			if (s.move_string == legal_moves.at(i).move_string) {
 				legal = true;
-				s = legal_moves.at(i); 
 			}
 		}
-		
 		if (legal) {
+
 			int piece = _board[s._start_rank][s._start_file];
 			_board[s._start_rank][s._start_file] = NA;
 			_board[s._end_rank][s._end_file] = piece;
-
+			
 			if (piece == wK) {
 				_wK_rank = s._end_rank;
 				_wK_file = s._end_file;
@@ -272,12 +239,11 @@ public:
 				_board[RANK_1][FILE_F] = wR;
 			}
 			if (s.move_string == "e1c1") {
-				std::cout << "white castled, queenside"; 
-				_board[RANK_1][FILE_A] = NA;
-				_board[RANK_1][FILE_D] = wR;
+			std::cout << "white castled, queenside"; 
+			_board[RANK_1][FILE_A] = NA;
+			_board[RANK_1][FILE_D] = wR;
 			}
 			
-
 			if (piece == bK) {
 				_bK_rank = s._end_rank;
 				_bK_file = s._end_file;
@@ -292,74 +258,130 @@ public:
 				_board[RANK_8][FILE_A] = NA;
 				_board[RANK_8][FILE_D] = bR;
 			}
-
-			if (s._promotion) {
+			
+			if (piece == wP && s._end_rank == RANK_8) {
 				std::string promotion_selection;
-				std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop";
+				std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop\n";
 				std::cin >> promotion_selection;
-
+				
 				// QUEEN
 				if (promotion_selection == "q" || promotion_selection == "Q") {
-					if (s._end_rank == RANK_8){
-						_board[s._end_rank][s._end_file] = wQ;
-					} else {
-						_board[s._end_rank][s._end_file] = bQ;
-					}
+					_board[s._end_rank][s._end_file] = wQ;
 				}
-				// KNIGHT
 				if (promotion_selection == "k" || promotion_selection == "K") {
-					if (s._end_rank == RANK_8){
-						_board[s._end_rank][s._end_file] = wK;
-					} else {
-						_board[s._end_rank][s._end_file] = bK;
-					}
+					_board[s._end_rank][s._end_file] = wN;
 				}
-				// ROOK
 				if (promotion_selection == "r" || promotion_selection == "R") {
-					if (s._end_rank == RANK_8){
-						_board[s._end_rank][s._end_file] = wR;
-					} else {
-						_board[s._end_rank][s._end_file] = bR;
-					}
+					_board[s._end_rank][s._end_file] = wR;
 				}
-				// BISHOP
 				if (promotion_selection == "b" || promotion_selection == "B") {
-					if (s._end_rank == RANK_8){
-						_board[s._end_rank][s._end_file] = wB;
-					} else {
-						_board[s._end_rank][s._end_file] = bB;
-					}
+					_board[s._end_rank][s._end_file] = wB;
 				}
 			}
+			
+			if (piece == bP && s._end_rank == RANK_1) {
+				std::string promotion_selection;
+				std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop\n";
+				std::cin >> promotion_selection;
+				
+				// QUEEN
+				if (promotion_selection == "q" || promotion_selection == "Q") {
+					_board[s._end_rank][s._end_file] = bQ;
+				}
+				if (promotion_selection == "k" || promotion_selection == "K") {
+					_board[s._end_rank][s._end_file] = bN;
+				}
+				if (promotion_selection == "r" || promotion_selection == "R") {
+					_board[s._end_rank][s._end_file] = bR;
+				}
+				if (promotion_selection == "b" || promotion_selection == "B") {
+					_board[s._end_rank][s._end_file] = bB;
+				}
+			}
+			
 			update_all_ad();
-
+			
 			if (_turn == WHITE) { 
 				_turn = BLACK;
 			} else { 
 				_turn = WHITE;
 			}
-		} 
+		}
 	};
-
-
-
-// playing a move (without verification. for testing purposes)
-	void _debug_move(const Move& s) {
-
+	
+// for the computer only	
+	void make_move(Move& s) {
+		
 		int piece = _board[s._start_rank][s._start_file];
-
 		_board[s._start_rank][s._start_file] = NA;
 		_board[s._end_rank][s._end_file] = piece;
 
 		if (piece == wK) {
-				_wK_rank = s._end_rank;
-				_wK_file = s._end_file;
+			_wK_rank = s._end_rank;
+			_wK_file = s._end_file;
 		}
+		if (s.move_string == "e1g1") { 
+			_board[RANK_1][FILE_H] = NA;
+			_board[RANK_1][FILE_F] = wR;
+		}
+		if (s.move_string == "e1c1") {
+			_board[RANK_1][FILE_A] = NA;
+			_board[RANK_1][FILE_D] = wR;
+		}
+
 		if (piece == bK) {
 			_bK_rank = s._end_rank;
 			_bK_file = s._end_file;
 		}
-		
+		if (s.move_string == "e8g8") {
+			_board[RANK_8][FILE_H] = NA;
+			_board[RANK_8][FILE_F] = bR;
+		}
+		if (s.move_string == "e8c8") {
+			_board[RANK_8][FILE_A] = NA;
+			_board[RANK_8][FILE_D] = bR;
+		}
+
+		if (s._promotion) {
+			// QUEEN
+			if (s._promotion_piece == wQ) {
+				_board[s._end_rank][s._end_file] = wQ;
+			}
+			if (s._promotion_piece == bQ) {
+				_board[s._end_rank][s._end_file] = bQ;
+			}
+			
+			// KNIGHT
+			if (s._promotion_piece == wN) {
+				_board[s._end_rank][s._end_file] = wN;
+			}
+			if (s._promotion_piece == bN) {
+				_board[s._end_rank][s._end_file] = bN;
+			}
+			
+			// ROOK
+			if (s._promotion_piece == wR) {
+				_board[s._end_rank][s._end_file] = wR;
+			}
+			if (s._promotion_piece == bR) {
+				_board[s._end_rank][s._end_file] = bR;
+			}
+			
+			// BISHOP
+			if (s._promotion_piece == wB) {		
+			_board[s._end_rank][s._end_file] = wB;
+			} 
+			if (s._promotion_piece == bB) {
+				_board[s._end_rank][s._end_file] = bB;
+			}
+		}
+		update_all_ad();
+
+		if (_turn == WHITE) { 
+			_turn = BLACK;
+		} else { 
+			_turn = WHITE;
+		}
 	};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -454,6 +476,21 @@ float position() const {
 		return std::to_string(8 - rank);
 	};
 
+	void find_kings() { 
+		for (int _rank = 0 ; _rank < 8 ; _rank++) { 
+			for (int _file = 0 ; _file < 8 ; _file++) { 
+				if (_board[_rank][_file] == wK) {
+					_wK_rank = _rank;
+					_wK_file = _file;
+				}
+				if (_board[_rank][_file] == bK) {
+					_bK_rank = _rank;
+					_bK_file = _file;
+				}
+			}
+		}
+	};
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -462,17 +499,12 @@ float position() const {
 
 	void get_moves(std::vector<Move>& moves) {
 		get_raw_moves(moves);
-		legal_moves = moves;
-
-		for (int i = 0 ; i < legal_moves.size(); i++) {
+		for (int i = 0 ; i < moves.size(); i++) {
 			Board new_board = *this;
-			new_board.make_move(legal_moves[i]);
+			new_board.make_move(moves[i]);
 			new_board.update_all_ad();
-			
-			// add check and en passant moves here
-			
 			if (new_board.is_in_check()) {
-				legal_moves.erase(legal_moves.begin() + i);
+				moves.erase(moves.begin() + i);
 				i--;
 			}
 		}
@@ -481,26 +513,26 @@ float position() const {
 			if (_white_castling_allowed) {	
 				white_castle_check();
 				if (_wKK_castle_allowed) {
-					legal_moves.push_back(Move("e1g1"));
+					moves.push_back(Move("e1g1"));
 				}
 				if (_wKQ_castle_allowed) {
-					legal_moves.push_back(Move("e1c1"));
+					moves.push_back(Move("e1c1"));
 				}
 			}
 		} else {
 			if (_black_castling_allowed) {	
 				black_castle_check();
 				if (_bKK_castle_allowed) {
-					legal_moves.push_back(Move("e8g8"));
+					moves.push_back(Move("e8g8"));
 				}
 				if (_bKQ_castle_allowed) {
-					legal_moves.push_back(Move("e8c8"));
+					moves.push_back(Move("e8c8"));
 				}
 			} 
 		}
 
 		// check for (stale)mate
-		if( legal_moves.empty()){
+		if(moves.empty()){
 			playing = false;
 			int result = evaluate_result();
 			if (result > 0) {
@@ -523,24 +555,25 @@ float position() const {
 			std::cout << "//////////////////" << "\n\n";
 			return;
 		}
+		
+		legal_moves = moves;
 	}
-
-// if (_bKK_castle_allowed || _bKQ_castle_allowed) {
-			
-//		} //* add to legal moves thing //* something broke this or the legal move checker
 
 	bool is_in_check() {
 		if (_turn == BLACK) {
 			// this checks after a move, which flips the turn to the opponent
-			if (_black_sees_squares[_wK_rank][_wK_file] >= 1) return true;
+			if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
+				return true;
+			}
 			return false;
 		} else {
-			if (_white_sees_squares[_bK_rank][_bK_file] >= 1) return true;
+			if (_white_sees_squares[_bK_rank][_bK_file] >= 1) {
+				return true;
+			}
 			return false;
 		} 
 	}
 
-//*
 	void get_raw_moves(std::vector<Move>& moves) {
 		moves.clear();
 		if (_turn == WHITE) {
@@ -718,6 +751,7 @@ float position() const {
 	}
 
 	// en passant //*
+
 
 	
 
@@ -1825,8 +1859,17 @@ float position() const {
 			Move pseudo_move(rank, file, rank - 1, file);
 			if (rank - 1 == RANK_8) {
 				pseudo_move._promotion = true;
+				pseudo_move._promotion_piece = wQ;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = wN;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = wR;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = wB;
+				moves.push_back(pseudo_move);
+			} else {
+				moves.push_back(pseudo_move);
 			}
-			moves.push_back(pseudo_move);
 			
 			if (_board[rank - 2][file] == NA && rank == RANK_2) {
 				Move pseudo_move(rank, file, rank - 2, file);
@@ -1845,8 +1888,17 @@ float position() const {
 				Move pseudo_move(rank, file, rank - 1, file + 1);
 				if (rank - 1 == RANK_8) {
 					pseudo_move._promotion = true;
+					pseudo_move._promotion_piece = wQ;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wN;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wR;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wB;
+					moves.push_back(pseudo_move);
+				} else {
+					moves.push_back(pseudo_move);
 				}
-				moves.push_back(pseudo_move);
 			}
 		}
 		// northwest
@@ -1855,8 +1907,17 @@ float position() const {
 				Move pseudo_move(rank, file, rank - 1, file - 1);
 				if (rank - 1 == RANK_8) {
 					pseudo_move._promotion = true;
+					pseudo_move._promotion_piece = wQ;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wN;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wR;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = wB;
+					moves.push_back(pseudo_move);
+				} else {
+					moves.push_back(pseudo_move);
 				}
-				moves.push_back(pseudo_move);
 			}
 		}
 	};
@@ -1868,8 +1929,17 @@ float position() const {
 			Move pseudo_move(rank, file, rank + 1, file);
 			if (rank + 1 == RANK_1) {
 				pseudo_move._promotion = true;
+				pseudo_move._promotion_piece = bQ;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = bN;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = bR;
+				moves.push_back(pseudo_move);
+				pseudo_move._promotion_piece = bB;
+				moves.push_back(pseudo_move);
+			} else {
+				moves.push_back(pseudo_move);
 			}
-			moves.push_back(pseudo_move);
 
 			if (_board[rank + 2][file] == NA && rank == RANK_7) {
 				Move pseudo_move(rank, file, rank + 2, file);
@@ -1888,8 +1958,17 @@ float position() const {
 				Move pseudo_move(rank, file, rank + 1, file + 1);
 				if (rank + 1 == RANK_1) {
 					pseudo_move._promotion = true;
+					pseudo_move._promotion_piece = bQ;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bN;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bR;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bB;
+					moves.push_back(pseudo_move);
+				} else {
+					moves.push_back(pseudo_move);
 				}
-				moves.push_back(pseudo_move);
 			}
 		}
 
@@ -1899,8 +1978,17 @@ float position() const {
 				Move pseudo_move(rank, file, rank + 1, file - 1);
 				if (rank + 1 == RANK_1) {
 					pseudo_move._promotion = true;
+					pseudo_move._promotion_piece = bQ;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bN;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bR;
+					moves.push_back(pseudo_move);
+					pseudo_move._promotion_piece = bB;
+					moves.push_back(pseudo_move);
+				} else {
+					moves.push_back(pseudo_move);
 				}
-				moves.push_back(pseudo_move);
 			}	
 		}
 	};

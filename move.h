@@ -11,17 +11,19 @@ private:
 	int _end_rank;
 	int _end_file;
 
-	std::string move_string;
+	
 	
 	bool _promotion = false;
-	
+	int _promotion_piece;
+
 	bool _en_passant = false;
 
   friend class Board;
 	friend std::ostream & operator << (std::ostream &out, const Move &m);
-  	// friend std::istream & operator >> (std::istream &in,  Move &m);
+		// friend std::istream & operator >> (std::istream &in,  Move &m);
 
 public:
+	std::string move_string;
 
 	Move()
 	{}
@@ -74,6 +76,8 @@ public:
   operator std::string() const { 
     return move_string; 
 	};
+
+	bool Move::operator==(const Move& other); // somethin shrimply aint right. im messing something up im sure
 };
 
 
@@ -90,3 +94,6 @@ std::istream & operator >> (std::istream &in, Move &m) {
   return in;
 };
 
+bool Move::operator==(const Move& other) {
+  return move_string == other.move_string;
+}

@@ -6,10 +6,14 @@
 
 int main() {
     Board main_board;
-    main_board.test_board();
+    main_board.set_up_boardless();
     std::vector<Move> help = {};
+    Move prev_move;
 
     while(main_board.playing) {
+
+        system("cls"); // tell the cmd to clear the terminal
+        
         Move m;
         main_board.get_moves(help);
         main_board.print();
@@ -30,16 +34,24 @@ int main() {
         }
 /////////////////////////////////////// END OF DEBUGGING STUFF //////////////////////////////////////
 
-        for (int i = 0 ; i < main_board.legal_moves.size(); i++) {
-            std::cout << main_board.legal_moves[i] << ", ";
+        // for the player. the cpu has a different list of moves. 
+        //  (mandatory since each promotion result is a different move to the cpu)
+        prev_move = help[0];
+        std::cout << help[0] << ", ";
+        for (int i = 1 ; i < help.size(); i++) {
+            if (prev_move.move_string == help[i].move_string) {
+                help.erase(help.begin() + i);
+				i--;
+            } else {
+                std::cout << help[i] << ", ";
+                prev_move = help[i];
+            }
         }
-        std::cout <<  std::endl << main_board.legal_moves.size() << std::endl;
+        std::cout <<  std::endl << help.size() << std::endl;
 
-        std::cout << "where we moving, chief?";
+        std::cout << "where we moving, chief? \n";
         std::cin >>  m;
-        main_board.make_move(m);
-
-        
+        main_board.player_move(m);
     }
 
     
