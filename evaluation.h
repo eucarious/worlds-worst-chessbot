@@ -11,29 +11,6 @@
 #define ROOK_VAL    500
 #define QUEEN_VAL   900
 
-
-// finish this
-class MinimaxValue
-{
-private:
-  float _value;
-  Move _move;
-public:
-  MinimaxValue(float value, Move move);
-  ~MinimaxValue();
-};
-
-MinimaxValue::MinimaxValue(float value, Move move) : _value(value), _move(move)
-{
-}
-
-MinimaxValue::~MinimaxValue()
-{
-}
-
-
-
-
 // following piece square tables are pretty much taken directly from the Chess Programming Wiki
 // from either the 'Simplified evaluation' page or that page mixed with PeSTO / TSCP pcsqs
 
@@ -45,7 +22,7 @@ int wP_pcsq[8][8]  = {
 		{ 50, 50, 50, 50, 50, 50, 50, 50 },
 		{ 10, 10, 20, 30, 30, 20, 10, 10 },
 		{  5,  5, 10, 25, 25, 10,  5,  5 },
-		{  0,  0,  0, 20, 20,  0,  0,  0 },
+		{  0,  0,  0, 25, 25,  0,  0,  0 },
 		{  5, -5,-10,  0,  0,-10, -5,  5 },
 		{  5, 10, 10,-20,-20, 10, 10,  5 },
 		{  0,  0,  0,  0,  0,  0,  0,  0 }
@@ -55,7 +32,7 @@ int bP_pcsq[8][8]  = {
 		{  0,  0,  0,  0,  0,  0,  0,  0 },
 		{  5, 10, 10,-20,-20, 10, 10,  5 },
 		{  5, -5,-10,  0,  0,-10, -5,  5 },
-		{  0,  0,  0, 20, 20,  0,  0,  0 },
+		{  0,  0,  0, 25, 25,  0,  0,  0 },
 		{  5,  5, 10, 25, 25, 10,  5,  5 },
     { 10, 10, 20, 30, 30, 20, 10, 10 },
     { 50, 50, 50, 50, 50, 50, 50, 50 },
@@ -63,13 +40,13 @@ int bP_pcsq[8][8]  = {
 };
 
 // applies to both knights
-int K_pcsq[8][8]  = {
+int N_pcsq[8][8]  = {
 		{-50,-40,-30,-30,-30,-30,-40,-50 },
 		{-40,-20,  0,  0,  0,  0,-20,-40 },
-		{-30,  0, 10, 15, 15, 10,  0,-30 },
+		{-30,  0,  5, 15, 15,  5,  0,-30 },
 		{-30,  0, 15, 20, 20, 15,  0,-30 },
 		{-30,  0, 15, 20, 20, 15,  0,-30 },
-    {-30,  0, 10, 15, 15, 10,  0,-30 },
+    {-30,  0,  5, 15, 15,  5,  0,-30 },
     {-40,-20,  0,  0,  0,  0,-20,-40 },
     {-50,-40,-30,-30,-30,-30,-40,-50 }
 };

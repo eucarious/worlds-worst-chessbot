@@ -9,6 +9,7 @@ int main() {
     main_board.set_up_boardless();
     std::vector<Move> help = {};
     Move prev_move;
+    MinimaxValue recommended;
 
     while(main_board.playing) {
 
@@ -20,18 +21,18 @@ int main() {
         if (help.empty()) {break;}
 
 ////////////////////////////////////////// DEBUGGING STUFF //////////////////////////////////////////
-        std::cout << "\n\n" ;
-        std::cout << " WHITE             BLACK \n" ;
-        for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
-            for (int file = FILE_A ; file <= FILE_H ; file++) {
-                std::cout << main_board._white_sees_squares[rank][file];
-            }
-            std::cout << "          ";
-            for (int file = FILE_A ; file <= FILE_H ; file++) {
-                std::cout << main_board._black_sees_squares[rank][file];
-            }
-            std::cout << std::endl;
-        }
+        // std::cout << "\n\n" ;
+        // std::cout << " WHITE             BLACK \n" ;
+        // for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
+        //     for (int file = FILE_A ; file <= FILE_H ; file++) {
+        //         std::cout << main_board._white_sees_squares[rank][file];
+        //     }
+        //     std::cout << "          ";
+        //     for (int file = FILE_A ; file <= FILE_H ; file++) {
+        //         std::cout << main_board._black_sees_squares[rank][file];
+        //     }
+        //     std::cout << std::endl;
+        // }
 /////////////////////////////////////// END OF DEBUGGING STUFF //////////////////////////////////////
 
         // for the player. the cpu has a different list of moves. 
@@ -47,7 +48,11 @@ int main() {
                 prev_move = help[i];
             }
         }
-        std::cout <<  std::endl << help.size() << std::endl;
+        
+        recommended = main_board.minimax(1);
+        std::cout << "\n\n" << "recommended move: ";
+        std::cout << recommended._move.move_string;
+        std::cout << "\n\n";
 
         std::cout << "where we moving, chief? \n";
         std::cin >>  m;

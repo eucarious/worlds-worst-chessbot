@@ -7,6 +7,20 @@
 #include "evaluation.h"
 
 #define en_passant_tile 20
+
+class MinimaxValue
+{
+public:
+	MinimaxValue(float value, Move move) :
+		_value(value), _move(move)
+	{};
+	MinimaxValue() 
+	{};
+
+	float	_value;
+	Move	_move;
+};
+
 class Board {
 public:
 	// king related variables
@@ -15,6 +29,7 @@ public:
 
 	// game control
   int _turn = WHITE;
+	int _turns_played = 0;
 	bool playing = true;
 
 	// castling variables
@@ -49,14 +64,14 @@ public:
 
 
   int _board[8][8] = {
-		{ bR, bN, bB, bQ, bK, bB, bN, bR },
-		{ bP, bP, bP, bP, bP, bP, wP, bP },
+		{ wK, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
+		{ NA, NA, NA, wP, NA, NA, NA, NA },
+		{ NA, NA, NA, NA, bB, NA, bR, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
+		{ NA, NA, NA, NA, NA, wN, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
-		{ NA, NA, NA, NA, NA, wK, bB, NA },
-		{ wP, wP, wP, wP, wP, wP, bP, wP },
-		{ wR, wN, wB, wQ, wK, wB, wN, wR }
+		{ bK, NA, NA, NA, NA, NA, NA, NA },
 	};
 
 	//  UNEDITED BOARD FOR U <3
@@ -86,6 +101,7 @@ public:
     clear_board();
 		clear_black_ad();
 		clear_white_ad();
+		_turns_played = 0;
 
     _board[RANK_8][FILE_A] = bR;
     _board[RANK_8][FILE_B] = bN;
@@ -379,10 +395,73 @@ public:
 
 		if (_turn == WHITE) { 
 			_turn = BLACK;
+			_turns_played++;
 		} else { 
 			_turn = WHITE;
+			_turns_played++;
 		}
 	};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// MINIMAX /////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//* doesnt work lmao
+	MinimaxValue minimax(int depth)
+	{
+		// Generoidaan aseman siirrot.
+		std::vector<Move> moves;
+		get_moves(moves);
+
+		if (moves.size() == 0)
+		{
+			// Rekursion kantatapaus 1:
+			// peli on päättynyt (ei yhtään laillista siirtoa).
+			return MinimaxValue(evaluate_result(), Move());
+		}
+
+		if (depth == 0)
+		{
+			// Rekursion kantatapaus 2:
+			// ollaan katkaisusyvyydessä.
+			return MinimaxValue(evaluate(), Move());
+		}
+
+		// Siirtoja on jäljellä ja ei olla katkaisusyvyydessä,
+		// joten kokeillaan yksitellen mahdollisia siirtoja,
+		// ja kutsutaan minimax:a kullekin seuraaja-asemalle.
+		// Otetaan paras minimax-arvo talteen (alustetaan
+		// paras_arvo mahdollisimman huonoksi siirtovuoroisen
+		// pelaajan kannalta).
+		float best_value = _turn == WHITE ?
+			std::numeric_limits<float>::min() : std::numeric_limits<float>::max();
+		Move best_move;
+		for (Move& s : moves)
+		{
+			Board uusi = *this;
+			uusi.make_move(s);
+
+			// Rekursioasekel: kutsutaan minimax:ia seuraaja-asemalle.
+			MinimaxValue value = uusi.minimax(depth - 1);
+
+			// Jos saatiin paras arvo, otetaan se talteen.
+			if (_turn == WHITE && value._value > best_value)
+			{
+				best_value = value._value;
+				best_move = s;
+			}
+			else if (_turn == BLACK && value._value < best_value)
+			{
+				best_value = value._value;
+				best_move = s;
+			}
+		}
+
+		// Palautetaan paras arvo.
+		return MinimaxValue(best_value, best_move);
+	}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // EVALUATION FUNCTIONS ///////////////////////////////////////////////////////////////////////////////
@@ -416,18 +495,50 @@ float material() const {
 			switch (piece)
 			{
 				case NA: break;
-				case wP: material_result += PAWN_VAL; break;
-				case bP: material_result -= PAWN_VAL; break;
-				case wR: material_result += ROOK_VAL; break;
-				case wN: material_result += KNIGHT_VAL; break;
-				case wB: material_result += BISHOP_VAL; break;
-				case wQ: material_result += QUEEN_VAL; break;
-				case wK: break;
-				case bR: material_result -= ROOK_VAL; break;
-				case bN: material_result -= KNIGHT_VAL; break;
-				case bB: material_result -= BISHOP_VAL; break;
-				case bQ: material_result -= QUEEN_VAL; break;
-				case bK: break;
+				case wP: 
+					material_result += PAWN_VAL + wP_pcsq[rank][file]; 
+					break;
+				case bP: 
+					material_result -= PAWN_VAL + bP_pcsq[rank][file]; 
+					break;
+				case wR: 
+					material_result += ROOK_VAL; 
+					break;
+				case wN: 
+					material_result += KNIGHT_VAL + N_pcsq[rank][file]; 
+					break;
+				case wB: 
+					material_result += BISHOP_VAL + wB_pcsq[rank][file]; 
+					break;
+				case wQ: 
+					material_result += QUEEN_VAL; 
+					break;
+				case wK: 
+					if (_turns_played >= 50) {
+						material_result += end_K_pscq[rank][file]; 
+					} else {
+						material_result += wK_pcsq[rank][file]; 
+					}
+					break;
+				case bR: 
+					material_result -= ROOK_VAL;
+					break;
+				case bN: 
+					material_result -= KNIGHT_VAL + N_pcsq[rank][file]; 
+					break;
+				case bB: 
+					material_result -= BISHOP_VAL + bB_pcsq[rank][file]; 
+					break;
+				case bQ: 
+					material_result -= QUEEN_VAL; 
+					break;
+				case bK: 
+					if (_turns_played >= 50) {
+						material_result -= end_K_pscq[rank][file]; 
+					} else {
+						material_result -= bK_pcsq[rank][file]; 
+					}
+					break;
 
 			default:
 				std::cout << "SOMETHING'S WRONG IN MATERIAL!!";
@@ -441,7 +552,7 @@ float material() const {
 // sliiightly misleading name. just checks how much vision the pieces have on the board
 // (goes through both ad maps and returns the difference as one float)
 float position() const {
-	float position_result;
+	float position_result = 0;
 	for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) {  
 		for (int file = FILE_A ; file <= FILE_H ; file++) { 
 			position_result += _white_sees_squares[rank][file] - _black_sees_squares[rank][file];

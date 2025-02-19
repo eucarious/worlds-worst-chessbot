@@ -14,7 +14,7 @@ private:
 	
 	
 	bool _promotion = false;
-	int _promotion_piece;
+	int _promotion_piece = NA;
 
 	bool _en_passant = false;
 
