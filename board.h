@@ -68,6 +68,44 @@ public:
 	// 	{ wP, wP, wP, wP, wP, wP, wP, wP },
 	// 	{ wR, wN, wB, wQ, wK, wB, wN, wR }
 
+	void test_board() {
+    clear_board();
+		clear_black_ad();
+		clear_white_ad();
+
+    _board[RANK_8][FILE_A] = bR;
+    _board[RANK_8][FILE_B] = bN;
+    _board[RANK_8][FILE_C] = wQ;
+    _board[RANK_8][FILE_D] = bQ;
+    _board[RANK_8][FILE_E] = bK;
+    _board[RANK_8][FILE_F] = bB;
+    _board[RANK_8][FILE_G] = bN;
+    _board[RANK_8][FILE_H] = bR;
+    for (int i = FILE_A; i <= FILE_H; i++) {
+      _board[RANK_7][i] = bP;
+    }
+
+    _bK_rank = RANK_8;
+    _bK_file = FILE_E;
+
+    _board[RANK_1][FILE_A] = wR;
+    _board[RANK_1][FILE_B] = wN;
+    _board[RANK_1][FILE_C] = wB;
+    _board[RANK_1][FILE_D] = wQ;
+    _board[RANK_1][FILE_E] = wK;
+    _board[RANK_1][FILE_F] = wB;
+    _board[RANK_1][FILE_G] = bQ;
+    _board[RANK_1][FILE_H] = wR;
+    for (int i = FILE_A; i <= FILE_H; i++) {
+      _board[RANK_2][i] = wP;
+    }
+    _wK_rank = RANK_1;
+    _wK_file = FILE_E;
+
+		update_all_ad();
+		playing = true;
+  }
+
 
   void clear_board() {
     for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) { 
@@ -215,7 +253,7 @@ public:
 
 			if (s.move_string == legal_moves.at(i).move_string) {
 				legal = true;
-				s._promotion = legal_moves.at(i)._promotion;
+				s = legal_moves.at(i); 
 			}
 		}
 		
@@ -228,12 +266,12 @@ public:
 				_wK_rank = s._end_rank;
 				_wK_file = s._end_file;
 			}
-			if ( s.move_string == "e1g1") {
+			if (s.move_string == "e1g1") {
 				std::cout << "white castled, kingside"; 
 				_board[RANK_1][FILE_H] = NA;
 				_board[RANK_1][FILE_F] = wR;
 			}
-			if ( s.move_string == "e1c1") {
+			if (s.move_string == "e1c1") {
 				std::cout << "white castled, queenside"; 
 				_board[RANK_1][FILE_A] = NA;
 				_board[RANK_1][FILE_D] = wR;
@@ -293,12 +331,11 @@ public:
 					}
 				}
 			}
+			update_all_ad();
 
 			if (_turn == WHITE) { 
-				update_white_ad();
 				_turn = BLACK;
-			} else if (_turn == BLACK) { 
-				update_black_ad();
+			} else { 
 				_turn = WHITE;
 			}
 		} 
@@ -425,16 +462,17 @@ float position() const {
 
 	void get_moves(std::vector<Move>& moves) {
 		get_raw_moves(moves);
+		legal_moves = moves;
 
-		for (int i = 0 ; i < moves.size(); i++) {
+		for (int i = 0 ; i < legal_moves.size(); i++) {
 			Board new_board = *this;
-			new_board.make_move(moves[i]);
+			new_board.make_move(legal_moves[i]);
 			new_board.update_all_ad();
 			
 			// add check and en passant moves here
 			
 			if (new_board.is_in_check()) {
-				moves.erase(moves.begin() + i);
+				legal_moves.erase(legal_moves.begin() + i);
 				i--;
 			}
 		}
@@ -443,26 +481,26 @@ float position() const {
 			if (_white_castling_allowed) {	
 				white_castle_check();
 				if (_wKK_castle_allowed) {
-					moves.push_back(Move("e1g1"));
+					legal_moves.push_back(Move("e1g1"));
 				}
 				if (_wKQ_castle_allowed) {
-					moves.push_back(Move("e1c1"));
+					legal_moves.push_back(Move("e1c1"));
 				}
 			}
 		} else {
 			if (_black_castling_allowed) {	
 				black_castle_check();
 				if (_bKK_castle_allowed) {
-					moves.push_back(Move("e8g8"));
+					legal_moves.push_back(Move("e8g8"));
 				}
 				if (_bKQ_castle_allowed) {
-					moves.push_back(Move("e8c8"));
+					legal_moves.push_back(Move("e8c8"));
 				}
 			} 
 		}
 
 		// check for (stale)mate
-		if(moves.empty()){
+		if( legal_moves.empty()){
 			playing = false;
 			int result = evaluate_result();
 			if (result > 0) {
@@ -485,20 +523,16 @@ float position() const {
 			std::cout << "//////////////////" << "\n\n";
 			return;
 		}
-
-		legal_moves = moves; 
 	}
 
 // if (_bKK_castle_allowed || _bKQ_castle_allowed) {
 			
-//		} //* add to legal moves thing
+//		} //* add to legal moves thing //* something broke this or the legal move checker
 
 	bool is_in_check() {
 		if (_turn == BLACK) {
 			// this checks after a move, which flips the turn to the opponent
-			if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
-				return true;
-			}
+			if (_black_sees_squares[_wK_rank][_wK_file] >= 1) return true;
 			return false;
 		} else {
 			if (_white_sees_squares[_bK_rank][_bK_file] >= 1) return true;
@@ -571,7 +605,7 @@ float position() const {
 	};
 
 
-	// castling //*
+	// castling
 
 	void white_castle_check(){
 		// early termination ilu
@@ -683,6 +717,9 @@ float position() const {
 
 	}
 
+	// en passant //*
+
+	
 
 
 // stick this at the bottom because it is so damn long
@@ -1793,6 +1830,7 @@ float position() const {
 			
 			if (_board[rank - 2][file] == NA && rank == RANK_2) {
 				Move pseudo_move(rank, file, rank - 2, file);
+				pseudo_move._en_passant = true;
 				moves.push_back(pseudo_move);
 				_doublestep_on_file = file;
 			}
@@ -1835,6 +1873,7 @@ float position() const {
 
 			if (_board[rank + 2][file] == NA && rank == RANK_7) {
 				Move pseudo_move(rank, file, rank + 2, file);
+				pseudo_move._en_passant = true;
 				moves.push_back(pseudo_move);
 				_doublestep_on_file = file;
 			}
