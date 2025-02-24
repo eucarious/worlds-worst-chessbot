@@ -6,15 +6,14 @@
 #include "move.h"
 #include "evaluation.h"
 
-#define en_passant_tile 20
+int end_of_minimax = 0;
+int no_more_moves = 0;
 
 class MinimaxValue
 {
 public:
 	MinimaxValue(float value, Move move) :
 		_value(value), _move(move)
-	{};
-	MinimaxValue() 
 	{};
 
 	float	_value;
@@ -41,7 +40,7 @@ public:
   bool _wKQ_castle_allowed = false;
 
 	bool _black_castling_allowed = true;
-	bool _bRA_moved = false;
+  bool _bRA_moved = false;
 	bool _bRH_moved = false;
 
 	bool _bKK_castle_allowed = false;
@@ -65,11 +64,11 @@ public:
 
   int _board[8][8] = {
 		{ wK, NA, NA, NA, NA, NA, NA, NA },
-		{ NA, NA, NA, NA, NA, NA, NA, NA },
+		{ NA, NA, NA, NA, bP, NA, NA, NA },
 		{ NA, NA, NA, wP, NA, NA, NA, NA },
-		{ NA, NA, NA, NA, bB, NA, bR, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
-		{ NA, NA, NA, NA, NA, wN, NA, NA },
+		{ NA, NA, NA, NA, NA, NA, NA, NA },
+		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ NA, NA, NA, NA, NA, NA, NA, NA },
 		{ bK, NA, NA, NA, NA, NA, NA, NA },
 	};
@@ -249,12 +248,12 @@ public:
 				_wK_rank = s._end_rank;
 				_wK_file = s._end_file;
 			}
-			if (s.move_string == "e1g1") {
+			if (piece == wK && s.move_string == "e1g1") {
 				std::cout << "white castled, kingside"; 
 				_board[RANK_1][FILE_H] = NA;
 				_board[RANK_1][FILE_F] = wR;
 			}
-			if (s.move_string == "e1c1") {
+			if (piece == wK && s.move_string == "e1c1") {
 			std::cout << "white castled, queenside"; 
 			_board[RANK_1][FILE_A] = NA;
 			_board[RANK_1][FILE_D] = wR;
@@ -264,12 +263,12 @@ public:
 				_bK_rank = s._end_rank;
 				_bK_file = s._end_file;
 			}
-			if (s.move_string == "e8g8") {
+			if (piece == bK && s.move_string == "e8g8") {
 				std::cout << "black castled, kingside"; 
 				_board[RANK_8][FILE_H] = NA;
 				_board[RANK_8][FILE_F] = bR;
 			}
-			if (s.move_string == "e8c8") {
+			if (piece == bK && s.move_string == "e8c8") {
 				std::cout << "black castled, queenside"; 
 				_board[RANK_8][FILE_A] = NA;
 				_board[RANK_8][FILE_D] = bR;
@@ -392,7 +391,7 @@ public:
 			}
 		}
 		update_all_ad();
-
+    
 		if (_turn == WHITE) { 
 			_turn = BLACK;
 			_turns_played++;
@@ -417,6 +416,7 @@ public:
 		{
 			// Rekursion kantatapaus 1:
 			// peli on päättynyt (ei yhtään laillista siirtoa).
+      no_more_moves++;
 			return MinimaxValue(evaluate_result(), Move());
 		}
 
@@ -424,6 +424,7 @@ public:
 		{
 			// Rekursion kantatapaus 2:
 			// ollaan katkaisusyvyydessä.
+      end_of_minimax++;
 			return MinimaxValue(evaluate(), Move());
 		}
 
@@ -444,17 +445,23 @@ public:
 			// Rekursioasekel: kutsutaan minimax:ia seuraaja-asemalle.
 			MinimaxValue value = uusi.minimax(depth - 1);
 
-			// Jos saatiin paras arvo, otetaan se talteen.
 			if (_turn == WHITE && value._value > best_value)
 			{
 				best_value = value._value;
 				best_move = s;
+        
+			//	std::cout << "white best move gotten ";
 			}
 			else if (_turn == BLACK && value._value < best_value)
 			{
 				best_value = value._value;
 				best_move = s;
+        
+			//	std::cout << "black best move gotten ";
+			} else {
+				//std::cout << "issues in minimax!!!!! ";
 			}
+
 		}
 
 		// Palautetaan paras arvo.
@@ -472,17 +479,19 @@ public:
 // DRAW  						0
 // BLACK checkmate -10000000
 int evaluate_result() const {
-	if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
-		return -10000000;
-	}
-	if (_white_sees_squares[_bK_rank][_bK_file] >= 1) {
-		return  10000000;
-	}
-	return 0;
+  
+  if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
+    return -100000;
+  }
+   
+  if (_white_sees_squares[_bK_rank][_bK_file] >= 1) {
+      return  100000;
+  }
+  return 0;
 }
 
 float evaluate() const {
-	return (1.0f * material() + 0.5f * position());
+	return (1.0f * material() + 0.2f * position());
 }
 
 float material() const {
@@ -646,25 +655,26 @@ float position() const {
 		if(moves.empty()){
 			playing = false;
 			int result = evaluate_result();
-			if (result > 0) {
-				std::cout << "\n\n";
-				std::cout << "//////////////////" << "\n";
-				std::cout << "//  WHITE WINS  //" << "\n";
-				std::cout << "//////////////////" << "\n\n";
-				return;
-			}
-			if (result < 0) {
-				std::cout << "\n\n";
-				std::cout << "//////////////////" << "\n";
-				std::cout << "//  BLACK WINS  //" << "\n";
-				std::cout << "//////////////////" << "\n\n";
-				return;
-			}
-			std::cout << "\n\n";
-			std::cout << "//////////////////" << "\n";
-			std::cout << "//     DRAW     //" << "\n";
-			std::cout << "//////////////////" << "\n\n";
-			return;
+      std::cout << result << " ";
+			// if (result > 0) {
+			// 	std::cout << "\n\n";
+			// 	std::cout << "//////////////////" << "\n";
+			// 	std::cout << "//  WHITE WINS  //" << "\n";
+			// 	std::cout << "//////////////////" << "\n\n";
+			// 	return;
+			// }
+			// if (result < 0) {
+			// 	std::cout << "\n\n";
+			// 	std::cout << "//////////////////" << "\n";
+			// 	std::cout << "//  BLACK WINS  //" << "\n";
+			// 	std::cout << "//////////////////" << "\n\n";
+			// 	return;
+			// }
+			// std::cout << "\n\n";
+			// std::cout << "//////////////////" << "\n";
+			// std::cout << "//     DRAW     //" << "\n";
+			// std::cout << "//////////////////" << "\n\n";
+			// return;
 		}
 		
 		legal_moves = moves;

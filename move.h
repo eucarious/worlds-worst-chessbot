@@ -11,11 +11,6 @@ private:
 	int _end_rank;
 	int _end_file;
 
-	
-	
-	bool _promotion = false;
-	int _promotion_piece = NA;
-
 	bool _en_passant = false;
 
   friend class Board;
@@ -23,6 +18,9 @@ private:
 		// friend std::istream & operator >> (std::istream &in,  Move &m);
 
 public:
+
+	bool _promotion = false;
+	int _promotion_piece = NA;
 	std::string move_string;
 
 	Move()
