@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <limits>
+
 #include "chess.h"
 #include "move.h"
 #include "evaluation.h"
@@ -9,6 +11,7 @@
 int end_of_minimax = 0;
 int no_more_moves = 0;
 int turns_played = 0;
+
 
 class MinimaxValue
 {
@@ -51,6 +54,7 @@ public:
 
   // en passant //* 
   int _doublestep_on_file = -1;
+  bool passantable = false;
 
   std::vector<Move> legal_moves;
 
@@ -239,10 +243,13 @@ public:
       if (legal) {break;}
       if (s.move_string == legal_moves.at(i).move_string) {
         legal = true;
+        s._en_passant = legal_moves.at(i)._en_passant;
       }
     }
 
     if (legal) {
+
+      passantable = false;
 
       int piece = _board[s._start_rank][s._start_file];
       _board[s._start_rank][s._start_file] = NA;
@@ -278,12 +285,31 @@ public:
         _board[RANK_8][FILE_D] = bR;
       }
 
+      if (piece == bP) {
+        if (s._start_rank == RANK_7 && s._end_rank == RANK_5) {
+          passantable = true;
+          _doublestep_on_file = s._end_file;
+        }
+      }
+  
+      if (piece == wP) {
+        if (s._start_rank == RANK_2 && s._end_rank == RANK_4) {
+          passantable = true;
+          _doublestep_on_file = s._end_file;
+        }
+      }
+  
+      if (s._en_passant) {
+        _board[s._end_rank][s._end_file] = piece;
+        _board[s._start_rank][s._end_file] = NA;
+      }
+  
+
       if (piece == wP && s._end_rank == RANK_8) {
         std::string promotion_selection;
         std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop\n";
         std::cin >> promotion_selection;
 
-        // QUEEN
         if (promotion_selection == "q" || promotion_selection == "Q") {
           _board[s._end_rank][s._end_file] = wQ;
         }
@@ -303,7 +329,6 @@ public:
         std::cout << "promote your piece! choose between (q)ueen, (k)night, (r)ook, or (b)ishop\n";
         std::cin >> promotion_selection;
 
-        // QUEEN
         if (promotion_selection == "q" || promotion_selection == "Q") {
           _board[s._end_rank][s._end_file] = bQ;
         }
@@ -333,6 +358,8 @@ public:
 // for the computer only	
   void make_move(Move& s) {
 
+    passantable = false;
+    
     int piece = _board[s._start_rank][s._start_file];
     _board[s._start_rank][s._start_file] = NA;
     _board[s._end_rank][s._end_file] = piece;
@@ -362,6 +389,26 @@ public:
       _board[RANK_8][FILE_A] = NA;
       _board[RANK_8][FILE_D] = bR;
     }
+
+    if (piece == bP) {
+      if (s._start_rank == RANK_7 && s._end_rank == RANK_5) {
+        passantable = true;
+        _doublestep_on_file = s._end_file;
+      }
+    }
+
+    if (piece == wP) {
+      if (s._start_rank == RANK_2 && s._end_rank == RANK_4) {
+        passantable = true;
+        _doublestep_on_file = s._end_file;
+      }
+    }
+
+    if (s._en_passant) {
+      _board[s._end_rank][s._end_file] = piece;
+      _board[s._start_rank][s._end_file] = NA;
+    }
+
 
     if (s._promotion) {
       // QUEEN
@@ -422,7 +469,7 @@ public:
       // Rekursion kantatapaus 1:
       // peli on päättynyt (ei yhtään laillista siirtoa).
       no_more_moves++;
-      return MinimaxValue(evaluate_result(), Move());
+      return MinimaxValue((evaluate_result() / float(depth)), Move());
     }
 
     if (depth == 0)
@@ -440,7 +487,7 @@ public:
     // paras_arvo mahdollisimman huonoksi siirtovuoroisen
     // pelaajan kannalta).
     float best_value = _turn == WHITE ?
-      -9000000 : std::numeric_limits<float>::max();
+      -std::numeric_limits<float>::max() : std::numeric_limits<float>::max();
     Move best_move;
     for (Move& s : moves)
     {
@@ -483,7 +530,7 @@ public:
 // WHITE checkmate     10000000
 // DRAW                0
 // BLACK checkmate    -10000000
-int evaluate_result() const {
+float evaluate_result() const {
   
   if (_black_sees_squares[_wK_rank][_wK_file] >= 1) {
     return -100000;
@@ -565,6 +612,7 @@ float material() const {
 
 // sliiightly misleading name. just checks how much vision the pieces have on the board
 // (goes through both ad maps and returns the difference as one float)
+//* add either a "fork checker" / attack n defending pieces checker to position or to a completely new function
 float position() const {
   float position_result = 0;
   for (int rank = RANK_8 ; rank <= RANK_1 ; rank++) {  
@@ -634,6 +682,7 @@ float position() const {
       }
     }
 
+    // castling has its own check checker
     if (_turn == WHITE) {
       if (_white_castling_allowed) {	
         white_castle_check();
@@ -660,26 +709,7 @@ float position() const {
     if(moves.empty()){
       playing = false;
       int result = evaluate_result();
-      std::cout << result << " ";
-      // if (result > 0) {
-      //   std::cout << "\n\n";
-      //   std::cout << "//////////////////" << "\n";
-      //   std::cout << "//  WHITE WINS  //" << "\n";
-      //   std::cout << "//////////////////" << "\n\n";
-      //   return;
-      // }
-      // if (result < 0) {
-      //   std::cout << "\n\n";
-      //   std::cout << "//////////////////" << "\n";
-      //   std::cout << "//  BLACK WINS  //" << "\n";
-      //   std::cout << "//////////////////" << "\n\n";
-      //   return;
-      // }
-      // std::cout << "\n\n";
-      // std::cout << "//////////////////" << "\n";
-      // std::cout << "//     DRAW     //" << "\n";
-      // std::cout << "//////////////////" << "\n\n";
-      // return;
+      return;
     }
     
     legal_moves = moves;
@@ -1990,9 +2020,7 @@ float position() const {
 
       if (_board[rank - 2][file] == NA && rank == RANK_2) {
         Move pseudo_move(rank, file, rank - 2, file);
-        pseudo_move._en_passant = true;
         moves.push_back(pseudo_move);
-        _doublestep_on_file = file;
       }
     }
   };
@@ -2017,6 +2045,14 @@ float position() const {
           moves.push_back(pseudo_move);
         }
       }
+
+      if (passantable) {
+        if (_doublestep_on_file == file + 1 && _board[rank][file + 1] == bP) {
+          Move pseudo_move(rank, file, rank - 1, file + 1);
+          pseudo_move._en_passant = true;
+          moves.push_back(pseudo_move);
+        }
+      }
     }
     // northwest
     if (file - 1 >= FILE_A) { 
@@ -2033,6 +2069,14 @@ float position() const {
           pseudo_move._promotion_piece = wB;
           moves.push_back(pseudo_move);
         } else {
+          moves.push_back(pseudo_move);
+        }
+      }
+
+      if (passantable) {
+        if (_doublestep_on_file == file - 1 && _board[rank][file - 1] == bP) {
+          Move pseudo_move(rank, file, rank - 1, file - 1);
+          pseudo_move._en_passant = true;
           moves.push_back(pseudo_move);
         }
       }
@@ -2060,9 +2104,7 @@ float position() const {
 
       if (_board[rank + 2][file] == NA && rank == RANK_7) {
         Move pseudo_move(rank, file, rank + 2, file);
-        pseudo_move._en_passant = true;
         moves.push_back(pseudo_move);
-        _doublestep_on_file = file;
       }
     }
   };
@@ -2087,6 +2129,13 @@ float position() const {
           moves.push_back(pseudo_move);
         }
       }
+      if (passantable) {
+        if (_doublestep_on_file == file + 1 && _board[rank][file + 1] == wP) {
+          Move pseudo_move(rank, file, rank + 1, file + 1);
+          pseudo_move._en_passant = true;
+          moves.push_back(pseudo_move);
+        }
+      }
     }
 
     if (file - 1 >= FILE_A) { 
@@ -2107,6 +2156,13 @@ float position() const {
           moves.push_back(pseudo_move);
         }
       }
+      if (passantable) {
+        if (_doublestep_on_file == file - 1 && _board[rank][file - 1] == wP) {
+          Move pseudo_move(rank, file, rank + 1, file - 1);
+          pseudo_move._en_passant = true;
+          moves.push_back(pseudo_move);
+        }
+      }
     }
   };
 
@@ -2115,11 +2171,11 @@ float position() const {
     if (rank - 1 < RANK_8 ) return; // shouldnt ever happen since pawns MUST promote
 
     // northeast
-    if (file + 1 <= FILE_H ) { 
+    if (file + 1 <= FILE_H ) {
       _white_sees_squares[rank - 1][file + 1] += 1;
     }
     // northwest
-    if (file - 1 >= FILE_A) { 
+    if (file - 1 >= FILE_A) {
       _white_sees_squares[rank - 1][file - 1] += 1;
     }
   };
