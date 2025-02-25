@@ -22,7 +22,7 @@ public:
   bool _promotion = false;
   int _promotion_piece = NA;
   std::string move_string;
-
+  
   Move()
   {}
 
