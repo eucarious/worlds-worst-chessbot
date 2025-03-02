@@ -56,7 +56,10 @@ public:
   int _doublestep_on_file = -1;
   bool passantable = false;
 
+  Move _last_move;
   std::vector<Move> legal_moves;
+
+
 
   //* don't forget Threefold Repetition (same check 3 times)
   //  Dead Position (probably not possible to do)
@@ -454,10 +457,10 @@ public:
   };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-// MINIMAX /////////////////////////////////////////////////////////////////////////////////////////
+// MINIMAX ////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//* doesnt work lmao
+//* DOES work lmao
   MinimaxValue minimax(int depth) 
   {
     // Generoidaan aseman siirrot.
@@ -519,6 +522,57 @@ public:
 
     // Palautetaan paras arvo.
     return MinimaxValue(best_value, best_move);
+  }
+
+  // hot damn this guy sucks //* (i fucked up the implementation)
+  MinimaxValue alphabeta(int depth, float alpha, float beta) {
+    std::vector<Move> moves;
+    get_moves(moves);
+
+    if (moves.size() == 0) {
+      no_more_moves++;
+      return MinimaxValue((evaluate_result() / float(depth)), Move());
+    }
+
+    if (depth == 0) {
+      end_of_minimax++;
+      return MinimaxValue(evaluate(), Move());
+    }
+    
+    //* i think i'm stupid. 
+    // NEVERMIND I FIXED IT??? (to be determined)
+    
+    if (_turn == WHITE){
+      float best_value = -INFINITY;
+      Move best_move;
+      for (Move& s : moves) {
+        Board uusi = *this;
+        uusi.make_move(s);
+        MinimaxValue eval = uusi.alphabeta(depth-1, alpha, beta);
+        if (eval._value > best_value) {
+        best_value = eval._value;
+        best_move = s;
+        }
+        alpha = std::max(alpha, eval._value);
+        if (beta <= alpha) break;
+      }
+      return MinimaxValue(best_value, best_move);
+    } else {
+      float best_value = INFINITY;
+      Move best_move;
+      for (Move& s : moves) {
+        Board uusi = *this;
+        uusi.make_move(s);
+        MinimaxValue eval = uusi.alphabeta(depth-1, alpha, beta);
+        if (eval._value < best_value) {
+        best_value = eval._value;
+        best_move = s;
+        }
+        beta = std::min(beta, eval._value);
+        if (beta <= alpha) break;
+      }
+      return MinimaxValue(best_value, best_move);
+    }
   }
 
 

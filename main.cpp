@@ -48,23 +48,32 @@ int main() {
       }
     }
     MinimaxValue recommended;
-    if (main_board._turn == WHITE) {
-      recommended = main_board.minimax(4);
+    if (main_board._turn == BLACK) {
+      if (turns_played < 4) {
+        recommended = main_board.alphabeta(2, -INFINITY, INFINITY);
+      } else {
+        // alpha beta plays weird chess. 
+        // gave up a Queen Rook fork in favour of a check
+        // something wrong in eval...?
+        recommended = main_board.alphabeta(4, -INFINITY, INFINITY);
+      }
+    }
+    //  recommended = main_board.minimax(2);
     // } else {
     //   recommended = main_board.minimax(4);
-    }
+    //}
     std::cout << "\n\n" << "recommended move: ";
     std::cout << recommended._move.move_string;
     if (recommended._move._promotion) {
       std::cout << "\n promote to " << recommended._move._promotion_piece;
     }
     std::cout << "\n\n";
-    // std::cout << "total minimax ends: " << end_of_minimax << "\n\ntotal stale/checkmates: " << no_more_moves;
-    // std::cout << "\n\nturns played: " << turns_played << "\n\n";
+    std::cout << "total ab ends: " << end_of_minimax << "\n\ntotal stale/checkmates: " << no_more_moves;
+    std::cout << "\n\nturns played: " << turns_played << "\n\n";
     std::cout << "enter a move from above: \n";
     std::cin  >> m;
     main_board.player_move(m);
   }
-    
-    return 0;
+
+  return 0;
 };
