@@ -543,7 +543,7 @@ public:
     // NEVERMIND I FIXED IT??? (to be determined)
     
     if (_turn == WHITE){
-      float best_value = -INFINITY;
+      float best_value = -9000000;
       Move best_move;
       for (Move& s : moves) {
         Board uusi = *this;
@@ -558,7 +558,7 @@ public:
       }
       return MinimaxValue(best_value, best_move);
     } else {
-      float best_value = INFINITY;
+      float best_value = 9000000;
       Move best_move;
       for (Move& s : moves) {
         Board uusi = *this;
