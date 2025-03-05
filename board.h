@@ -634,14 +634,6 @@ public:
   }
 
   // hot damn this guy sucks //* (i fucked up the implementation)
-  /**
-   * @brief An algorithm that  FILL THIS
-   * 
-   * @param depth How many turns down the line is checked.
-   * @param alpha 
-   * @param beta 
-   * @return MinimaxValue The value of the current board position.
-   */
   MinimaxValue alphabeta(int depth, float alpha, float beta) {
     std::vector<Move> moves;
     get_moves(moves);
