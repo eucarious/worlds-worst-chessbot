@@ -1,0 +1,113 @@
+\doxysection{move.\+h}
+\hypertarget{move_8h_source}{}\label{move_8h_source}\index{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/move.h@{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/move.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}chess.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMove}{Move}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordtype}{int}\ \_start\_rank;\ }
+\DoxyCodeLine{00014\ \ \ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{int}\ \_start\_file;\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{int}\ \_end\_rank;\ }
+\DoxyCodeLine{00020\ \ \ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{int}\ \_end\_file;\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBoard}{Board}};\ }
+\DoxyCodeLine{00026\ \ \ }
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ \mbox{\hyperlink{classMove_a76b65288f18c4c5f90d3682bfff7200a}{operator\ <<\ }}(std::ostream\ \&out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classMove}{Move}}\ \&m);\ }
+\DoxyCodeLine{00029\ \ \ }
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ friend\ std::istream\ \&\ operator\ >>\ (std::istream\ \&in,\ \ Move\ \&m);}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMove_a7caf09e13ffbf53b66293338d1cc8add}{\_en\_passant}}\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMove_a465b6bc70cf6be29abe4b98f3bf44a58}{\_promotion}}\ =\ \textcolor{keyword}{false};\ \ }
+\DoxyCodeLine{00039\ \ \ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classMove_acc6364120254d2a830d46ac9dfb625c8}{\_promotion\_piece}}\ =\ NA;\ }
+\DoxyCodeLine{00042\ \ \ }
+\DoxyCodeLine{00044\ \ \ std::string\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}};\ \ }
+\DoxyCodeLine{00045\ \ \ }
+\DoxyCodeLine{00046\ \ \ }
+\DoxyCodeLine{00047\ \ \ \mbox{\hyperlink{classMove}{Move}}()}
+\DoxyCodeLine{00048\ \ \ \{\}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \mbox{\hyperlink{classMove}{Move}}(\textcolor{keywordtype}{int}\ start\_rank,\ \textcolor{keywordtype}{int}\ start\_file,\ \textcolor{keywordtype}{int}\ end\_rank,\ \textcolor{keywordtype}{int}\ end\_file)\ :}
+\DoxyCodeLine{00051\ \ \ \_start\_rank(start\_rank),\ \_start\_file(start\_file),\ \_end\_rank(end\_rank),\ \_end\_file(end\_file)}
+\DoxyCodeLine{00052\ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{classMove_ac62ca32630adba463e459109b3f9ee26}{\_move\_to\_string}}(start\_rank,\ start\_file,\ end\_rank,\ end\_file);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classMove_af92df24ca96ef7b02d53bdfb14ceb754}{Move}}(\textcolor{keyword}{const}\ std::string\&\ s)}
+\DoxyCodeLine{00062\ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ =\ s;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\ ==\ \textcolor{stringliteral}{"{}undo"{}})\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \_start\_rank\ =\ 8\ -\/\ (s.at(1)\ -\/\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00068\ \ \ \ \ \_start\_file\ =\ s.at(0)\ -\/\ \textcolor{charliteral}{'a'};}
+\DoxyCodeLine{00069\ \ \ \ \ \_end\_rank\ =\ 8\ -\/\ (s.at(3)\ -\/\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00070\ \ \ \ \ \_end\_file\ =\ s.at(2)\ -\/\ \textcolor{charliteral}{'a'};}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMove_ac62ca32630adba463e459109b3f9ee26}{\_move\_to\_string}}(\textcolor{keywordtype}{int}\ start\_rank,\ \textcolor{keywordtype}{int}\ start\_file,\ \textcolor{keywordtype}{int}\ end\_rank,\ \textcolor{keywordtype}{int}\ end\_file)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{switch}\ (start\_file)}
+\DoxyCodeLine{00085\ \ \ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_A:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'a'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_B:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'b'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_C:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'c'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_D:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'d'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_E:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'e'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_F:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'f'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_G:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'g'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_H:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'h'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ std::to\_string(8\ -\/\ start\_rank);}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (end\_file)}
+\DoxyCodeLine{00098\ \ \ \ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_A:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'a'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_B:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'b'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_C:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'c'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_D:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'d'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_E:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'e'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_F:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'f'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_G:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'g'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ FILE\_H:\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ \textcolor{charliteral}{'h'};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}}\ +=\ std::to\_string(8\ -\/\ end\_rank);}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{operator}\ std::string()\textcolor{keyword}{\ const\ }\{\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}};\ }
+\DoxyCodeLine{00116\ \ \ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{comment}{//\ \ bool\ operator==(const\ Move\&\ other);\ //\ somethin\ shrimply\ aint\ right.\ im\ messing\ something\ up\ im\ sure}}
+\DoxyCodeLine{00119\ \};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ std::ostream\&\ operator\ <<\ (std::ostream\&\ out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classMove}{Move}}\&\ m)\ \{}
+\DoxyCodeLine{00123\ \ \ out\ <<\ m.\mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\_string}};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00125\ \};}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ std::istream\ \&\ operator\ >>\ (std::istream\ \&in,\ \mbox{\hyperlink{classMove}{Move}}\ \&m)\ \{}
+\DoxyCodeLine{00128\ \ \ std::string\ move\_test;}
+\DoxyCodeLine{00129\ \ \ in\ >>\ move\_test;}
+\DoxyCodeLine{00130\ \ \ m\ =\ \mbox{\hyperlink{classMove}{Move}}(move\_test);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordflow}{return}\ in;}
+\DoxyCodeLine{00133\ \};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{comment}{//\ bool\ Move::operator==(const\ Move\&\ other)\ \{}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//\ \ return\ move\_string\ ==\ other.move\_string;}}
+\DoxyCodeLine{00137\ \textcolor{comment}{//\}}}
+
+\end{DoxyCode}

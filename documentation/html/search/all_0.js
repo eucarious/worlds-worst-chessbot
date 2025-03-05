@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['_5fbkk_5fcastle_5fallowed_0',['_bKK_castle_allowed',['../classBoard.html#a633d91a943f8ef181e868af726ea1484',1,'Board']]],
+  ['_5fbkq_5fcastle_5fallowed_1',['_bKQ_castle_allowed',['../classBoard.html#a9ad4a270cdad02547a5058115d2cf8c1',1,'Board']]],
+  ['_5fblack_5fcastling_5fallowed_2',['_black_castling_allowed',['../classBoard.html#a240e2216b89794b52b990e8baf031932',1,'Board']]],
+  ['_5fblack_5fsees_5fsquares_3',['_black_sees_squares',['../classBoard.html#a619294275b6c0ad097f073d51ef471bf',1,'Board']]],
+  ['_5fboard_4',['_board',['../classBoard.html#a4c5d26dbdab72f14e75c8f2c51863aad',1,'Board']]],
+  ['_5fbra_5fmoved_5',['_bRA_moved',['../classBoard.html#aaa05a1402a85c418f55ea65365d5e36d',1,'Board']]],
+  ['_5fbrh_5fmoved_6',['_bRH_moved',['../classBoard.html#a283d845ad46ba7e273d67ff882135857',1,'Board']]],
+  ['_5fdoublestep_5fon_5ffile_7',['_doublestep_on_file',['../classBoard.html#aaa80913aaf3489ddc5127ed6c573629f',1,'Board']]],
+  ['_5fen_5fpassant_8',['_en_passant',['../classMove.html#a7caf09e13ffbf53b66293338d1cc8add',1,'Move']]],
+  ['_5fin_5fcheck_9',['_in_check',['../classBoard.html#a9682fcd631a4290e325270ca0cbc93af',1,'Board']]],
+  ['_5fmove_10',['_move',['../classMinimaxValue.html#ae4c6052397f0798c3aab55d003c2c4c9',1,'MinimaxValue']]],
+  ['_5fmove_5fto_5fstring_11',['_move_to_string',['../classMove.html#ac62ca32630adba463e459109b3f9ee26',1,'Move']]],
+  ['_5fpromotion_12',['_promotion',['../classMove.html#a465b6bc70cf6be29abe4b98f3bf44a58',1,'Move']]],
+  ['_5fpromotion_5fpiece_13',['_promotion_piece',['../classMove.html#acc6364120254d2a830d46ac9dfb625c8',1,'Move']]],
+  ['_5fturn_14',['_turn',['../classBoard.html#aac8523733fc477d1fb791e4bc4837ebb',1,'Board']]],
+  ['_5fvalue_15',['_value',['../classMinimaxValue.html#a160d05b0db009a8fdd5880042032b265',1,'MinimaxValue']]],
+  ['_5fwhite_5fcastling_5fallowed_16',['_white_castling_allowed',['../classBoard.html#af03e670c90c7ce70658266e56d8b000d',1,'Board']]],
+  ['_5fwhite_5fsees_5fsquares_17',['_white_sees_squares',['../classBoard.html#a8bfc9960b1b7bba29bfe8773afc60c6f',1,'Board']]],
+  ['_5fwk_5frank_18',['_wK_rank',['../classBoard.html#abce8bb3365db9f810a723e0bbcab7694',1,'Board']]],
+  ['_5fwkk_5fcastle_5fallowed_19',['_wKK_castle_allowed',['../classBoard.html#a4d6e654636cf2899a312883e1a839637',1,'Board']]],
+  ['_5fwkq_5fcastle_5fallowed_20',['_wKQ_castle_allowed',['../classBoard.html#a3c768ff1cc9433bed7bdfa4ef2ad05f8',1,'Board']]],
+  ['_5fwra_5fmoved_21',['_wRA_moved',['../classBoard.html#a611413b89d26ec31a930c259a2cf6047',1,'Board']]],
+  ['_5fwrh_5fmoved_22',['_wRH_moved',['../classBoard.html#a8fdf623ab8cd0b01551ba6bbe58cebb9',1,'Board']]]
+];

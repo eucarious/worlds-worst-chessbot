@@ -58,6 +58,7 @@ int main() {
     // } else {
     //   recommended = main_board.minimax(4);
     //}
+    // main_board.make_move(recommended._move);
     std::cout << "\n\n" << "recommended move: ";
     std::cout << recommended._move.move_string;
     if (recommended._move._promotion) {

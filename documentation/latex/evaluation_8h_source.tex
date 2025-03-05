@@ -1,0 +1,122 @@
+\doxysection{evaluation.\+h}
+\hypertarget{evaluation_8h_source}{}\label{evaluation_8h_source}\index{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/evaluation.h@{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/evaluation.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ sotilas\ 1}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ ratsu\ 3}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ lähetti\ 3}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ torni\ 5}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ daami\ 9}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ in\ centipawns\ }}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ PAWN\_VAL\ \ \ \ 100}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ KNIGHT\_VAL\ \ 300}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ BISHOP\_VAL\ \ 320}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ ROOK\_VAL\ \ \ \ 500}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ QUEEN\_VAL\ \ \ 900}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ following\ piece\ square\ tables\ are\ pretty\ much\ taken\ directly\ from\ the\ Chess\ Programming\ Wiki}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ from\ either\ the\ 'Simplified\ evaluation'\ page\ or\ that\ page\ mixed\ with\ PeSTO\ /\ TSCP\ pcsqs}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//*\ note\ to\ self:\ since\ these\ table\ values\ are\ mixed\ and\ matched,\ there\ might\ be\ some\ issues}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ with\ 'square\ in-\//deflation'.}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{int}\ wP\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0\ \},}
+\DoxyCodeLine{00022\ \ \ \ \ \{\ 50,\ 50,\ 50,\ 50,\ 50,\ 50,\ 50,\ 50\ \},}
+\DoxyCodeLine{00023\ \ \ \ \ \{\ 10,\ 10,\ 20,\ 30,\ 30,\ 20,\ 10,\ 10\ \},}
+\DoxyCodeLine{00024\ \ \ \ \ \{\ \ 5,\ \ 5,\ 10,\ 25,\ 25,\ 10,\ \ 5,\ \ 5\ \},}
+\DoxyCodeLine{00025\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ 25,\ 25,\ \ 0,\ \ 0,\ \ 0\ \},}
+\DoxyCodeLine{00026\ \ \ \ \ \{\ \ 5,\ -\/5,-\/10,\ \ 0,\ \ 0,-\/10,\ -\/5,\ \ 5\ \},}
+\DoxyCodeLine{00027\ \ \ \ \ \{\ \ 5,\ 10,\ 10,-\/20,-\/20,\ 10,\ 10,\ \ 5\ \},}
+\DoxyCodeLine{00028\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0\ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keywordtype}{int}\ bP\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0\ \},}
+\DoxyCodeLine{00033\ \ \ \ \ \{\ \ 5,\ 10,\ 10,-\/20,-\/20,\ 10,\ 10,\ \ 5\ \},}
+\DoxyCodeLine{00034\ \ \ \ \ \{\ \ 5,\ -\/5,-\/10,\ \ 0,\ \ 0,-\/10,\ -\/5,\ \ 5\ \},}
+\DoxyCodeLine{00035\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ 25,\ 25,\ \ 0,\ \ 0,\ \ 0\ \},}
+\DoxyCodeLine{00036\ \ \ \ \ \{\ \ 5,\ \ 5,\ 10,\ 25,\ 25,\ 10,\ \ 5,\ \ 5\ \},}
+\DoxyCodeLine{00037\ \ \ \ \ \{\ 10,\ 10,\ 20,\ 30,\ 30,\ 20,\ 10,\ 10\ \},}
+\DoxyCodeLine{00038\ \ \ \ \ \{\ 50,\ 50,\ 50,\ 50,\ 50,\ 50,\ 50,\ 50\ \},}
+\DoxyCodeLine{00039\ \ \ \ \ \{\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0\ \}}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ applies\ to\ both\ knights}}
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{int}\ N\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \{-\/50,-\/40,-\/30,-\/30,-\/30,-\/30,-\/40,-\/50\ \},}
+\DoxyCodeLine{00045\ \ \ \ \ \{-\/40,-\/20,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/20,-\/40\ \},}
+\DoxyCodeLine{00046\ \ \ \ \ \{-\/30,\ \ 0,\ \ 5,\ 15,\ 15,\ \ 5,\ \ 0,-\/30\ \},}
+\DoxyCodeLine{00047\ \ \ \ \ \{-\/30,\ \ 0,\ 15,\ 20,\ 20,\ 15,\ \ 0,-\/30\ \},}
+\DoxyCodeLine{00048\ \ \ \ \ \{-\/30,\ \ 0,\ 15,\ 20,\ 20,\ 15,\ \ 0,-\/30\ \},}
+\DoxyCodeLine{00049\ \ \ \ \ \{-\/30,\ \ 0,\ \ 5,\ 15,\ 15,\ \ 5,\ \ 0,-\/30\ \},}
+\DoxyCodeLine{00050\ \ \ \ \ \{-\/40,-\/20,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/20,-\/40\ \},}
+\DoxyCodeLine{00051\ \ \ \ \ \{-\/50,-\/40,-\/30,-\/30,-\/30,-\/30,-\/40,-\/50\ \}}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ only\ difference\ in\ bishop\ piecesquares\ are\ the\ starting\ position\ negatives\ }}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ \ \ \ -\/>\ to\ move\ out\ of\ the\ way\ so\ that\ the\ king\ can\ castle}}
+\DoxyCodeLine{00056\ \textcolor{keywordtype}{int}\ wB\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \{-\/20,-\/10,-\/10,-\/10,-\/10,-\/10,-\/10,-\/20\ \},}
+\DoxyCodeLine{00058\ \ \ \ \ \{-\/10,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00059\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ \ 5,\ \ 5,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00060\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ 10,\ 10,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00061\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ 10,\ 10,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00062\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ \ 5,\ \ 5,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00063\ \ \ \ \ \{-\/10,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00064\ \ \ \ \ \{-\/20,-\/10,-\/20,-\/10,-\/10,-\/20,-\/10,-\/20\ \}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keywordtype}{int}\ bB\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \{-\/20,-\/10,-\/20,-\/10,-\/10,-\/20,-\/10,-\/20\ \},}
+\DoxyCodeLine{00069\ \ \ \ \ \{-\/10,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00070\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ \ 5,\ \ 5,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00071\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ 10,\ 10,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00072\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ 10,\ 10,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00073\ \ \ \ \ \{-\/10,\ \ 0,\ \ 5,\ \ 5,\ \ 5,\ \ 5,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00074\ \ \ \ \ \{-\/10,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,\ \ 0,-\/10\ \},}
+\DoxyCodeLine{00075\ \ \ \ \ \{-\/20,-\/10,-\/10,-\/10,-\/10,-\/10,-\/10,-\/20\ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ rook\ n\ queen\ can\ figure\ it\ out\ themselves}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ while\ both\ queens\ are\ still\ in\ play}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ or\ piece\ val\ total\ is\ above\ 1400}}
+\DoxyCodeLine{00082\ \textcolor{keywordtype}{int}\ wK\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00084\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00085\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00086\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00087\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00088\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00089\ \ \ \ \ \{-\/20,-\/20,-\/20,-\/20,-\/20,-\/20,-\/20,-\/20\ \},}
+\DoxyCodeLine{00090\ \ \ \ \ \{\ \ 0,\ 20,\ 40,-\/20,\ \ 0,-\/20,\ 40,\ 20\ \}}
+\DoxyCodeLine{00091\ \};\ \textcolor{comment}{//\ inner\ 40s\ are\ to\ encourage\ castling}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keywordtype}{int}\ bK\_pcsq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \{\ \ 0,\ 20,\ 40,-\/20,\ \ 0,-\/20,\ 40,\ 20\ \},}
+\DoxyCodeLine{00095\ \ \ \ \ \{-\/20,-\/20,-\/20,-\/20,-\/20,-\/20,-\/20,-\/20\ \},}
+\DoxyCodeLine{00096\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00097\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00098\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00099\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00100\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \},}
+\DoxyCodeLine{00101\ \ \ \ \ \{-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40,-\/40\ \}}
+\DoxyCodeLine{00102\ \};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ when\ both\ queens\ are\ no\ longer\ in\ play\ }}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ or\ piece\ val\ is\ below\ 1400-\/ish.\ i'll\ figure\ out\ the\ specifics\ sometime}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ same\ for\ both}}
+\DoxyCodeLine{00107\ \textcolor{keywordtype}{int}\ end\_K\_pscq[8][8]\ \ =\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \{-\/10,\ 10,\ 20,\ 30,\ 30,\ 20,\ 10,-\/10\ \},}
+\DoxyCodeLine{00109\ \ \ \ \ \{\ 10,\ 20,\ 30,\ 40,\ 40,\ 30,\ 20,\ 10\ \},}
+\DoxyCodeLine{00110\ \ \ \ \ \{\ 20,\ 30,\ 40,\ 50,\ 50,\ 40,\ 30,\ 20\ \},}
+\DoxyCodeLine{00111\ \ \ \ \ \{\ 30,\ 40,\ 50,\ 60,\ 60,\ 50,\ 40,\ 30\ \},}
+\DoxyCodeLine{00112\ \ \ \ \ \{\ 30,\ 40,\ 50,\ 60,\ 60,\ 50,\ 40,\ 30\ \},}
+\DoxyCodeLine{00113\ \ \ \ \ \{\ 20,\ 30,\ 40,\ 50,\ 50,\ 40,\ 30,\ 20\ \},}
+\DoxyCodeLine{00114\ \ \ \ \ \{\ 10,\ 20,\ 30,\ 40,\ 40,\ 30,\ 20,\ 10\ \},}
+\DoxyCodeLine{00115\ \ \ \ \ \{-\/10,\ 10,\ 20,\ 30,\ 30,\ 20,\ 10,-\/10\ \}}
+\DoxyCodeLine{00116\ \};\textcolor{comment}{//\ encourages\ the\ kings\ to\ be\ in\ the\ middle\ and\ discourages\ from\ going\ into\ corners}}
+
+\end{DoxyCode}

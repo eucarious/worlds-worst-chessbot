@@ -1,0 +1,16 @@
+digraph "/home/bluviik/Documents/GitHub/worlds-worst-chessbot"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_e5fbe6d2783ccd4c93c7856d92d7be6e {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="GitHub", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_e5fbe6d2783ccd4c93c7856d92d7be6e.html",tooltip=""]
+  subgraph clusterdir_deafd6d21d8865049276be32f86b4e90 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_deafd6d21d8865049276be32f86b4e90.html",tooltip=""]
+    dir_deafd6d21d8865049276be32f86b4e90 [shape=plaintext, label="worlds-worst-chessbot"];
+  dir_86b494ad748c7f26445982e1bd7d90dc [label="build", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_86b494ad748c7f26445982e1bd7d90dc.html",tooltip=""];
+  }
+  }
+}

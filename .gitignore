@@ -1,8 +1,3 @@
-*
-
-!*.cpp
-!*.h
-!*.txt
-!.gitignore
-!.gitattributes
-!*/
+/build
+/.git
+/.vscode

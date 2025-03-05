@@ -1,0 +1,822 @@
+\doxysection{Board Class Reference}
+\hypertarget{classBoard}{}\label{classBoard}\index{Board@{Board}}
+
+
+The chessboard itself. Keeps track of nearly everything.  
+
+
+
+
+{\ttfamily \#include $<$board.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classBoard_a982389127409bd6c24ac4c9257c87382}\label{classBoard_a982389127409bd6c24ac4c9257c87382} 
+void {\bfseries clear\+\_\+board} ()
+\begin{DoxyCompactList}\small\item\em Empty every piece on the board. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_aab1d7e89ee4bf322e23f98e7052cab9b}\label{classBoard_aab1d7e89ee4bf322e23f98e7052cab9b} 
+void {\bfseries set\+\_\+up\+\_\+boardless} ()
+\begin{DoxyCompactList}\small\item\em Set the up a debug board. Uses the \+\_\+board variable\textquotesingle{}s state. For debugging purposes. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_a11bc8f0fbac0408eaedd2881bebbb936}\label{classBoard_a11bc8f0fbac0408eaedd2881bebbb936} 
+void {\bfseries set\+\_\+up\+\_\+board} ()
+\begin{DoxyCompactList}\small\item\em Set the up the board object for play. Clears the \+\_\+board variable and sets up the standard starting board. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_ac6bc45b6b0bee9b5c91a5bd0d9676fb5}\label{classBoard_ac6bc45b6b0bee9b5c91a5bd0d9676fb5} 
+void {\bfseries print} () const
+\begin{DoxyCompactList}\small\item\em Print the board into the console. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_a86dad9775ad64796c6c696500542301e}\label{classBoard_a86dad9775ad64796c6c696500542301e} 
+void {\bfseries clear\+\_\+white\+\_\+ad} ()
+\begin{DoxyCompactList}\small\item\em Clears White\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_af4a3ea80c847d0e3a07f881119679f2a}\label{classBoard_af4a3ea80c847d0e3a07f881119679f2a} 
+void {\bfseries clear\+\_\+black\+\_\+ad} ()
+\begin{DoxyCompactList}\small\item\em Clears Black\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_ad11626fc284ff99f1659e45a8b03cc65}{player\+\_\+move}} (\mbox{\hyperlink{classMove}{Move}} \&s)
+\begin{DoxyCompactList}\small\item\em Handles player made moves. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a451250cff6a9f40b89862a3de24729e1}{make\+\_\+move}} (\mbox{\hyperlink{classMove}{Move}} \&s)
+\begin{DoxyCompactList}\small\item\em Handles computer made moves. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMinimaxValue}{Minimax\+Value}} \mbox{\hyperlink{classBoard_a58091b6e0e5d759e296af79f4a947250}{minimax}} (int depth)
+\begin{DoxyCompactList}\small\item\em An algorithm that through every possible move and returns the best move for the respective player (up to the depth given) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMinimaxValue}{Minimax\+Value}} \mbox{\hyperlink{classBoard_a8808ef0839020e9ee22d5ef6d611a095}{alphabeta}} (int depth, float alpha, float beta)
+\begin{DoxyCompactList}\small\item\em An algorithm that FILL THIS. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classBoard_ad106901656ae55146012daca27677bcc}{evaluate\+\_\+result}} () const
+\begin{DoxyCompactList}\small\item\em Evaluates the end of a game. Called when no legal moves remain. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classBoard_a65efea2522fe38d043130a09d826f698}{evaluate}} () const
+\begin{DoxyCompactList}\small\item\em Evaluates the current position on the board. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classBoard_a6a2c0d29ac76281d55c12c3861347f54}{material}} () const
+\begin{DoxyCompactList}\small\item\em Calculates the current material value of the board. Includes adjustments to the value for a piece\textquotesingle{}s position on the board. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classBoard_a6d3c8ecc87292e9891a108930be41570}{position}} () const
+\begin{DoxyCompactList}\small\item\em Rudimentary evaluation of the overall positioning on the board. Relies on \textquotesingle{}attack defense\textquotesingle{} vision maps. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_a07d068de703368c8bf25cc8faa262df9}\label{classBoard_a07d068de703368c8bf25cc8faa262df9} 
+void {\bfseries find\+\_\+kings} ()
+\begin{DoxyCompactList}\small\item\em Search for the position of the kings on the board. Updates their stored positions. Should only called on custom (debug) setups. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a492dc2c270931e8bf7157efea74671b1}{get\+\_\+moves}} (std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Get all legal moves on this turn. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classBoard_a008c581be78f5ca81d98d0c779ee1919}{is\+\_\+in\+\_\+check}} ()
+\begin{DoxyCompactList}\small\item\em Determines whether the current player is in check or not. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_aa4a8ca2d111dadfe089748d9823074cf}{get\+\_\+raw\+\_\+moves}} (std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Get all pseudo-\/legal moves on this turn. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_a4b972c9a26d82ece8b18b33bd40de99c}\label{classBoard_a4b972c9a26d82ece8b18b33bd40de99c} 
+void {\bfseries white\+\_\+castle\+\_\+check} ()
+\begin{DoxyCompactList}\small\item\em Checks whether White can castle this turn. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_ab7fdfaf815821a0098dc13d064bba535}\label{classBoard_ab7fdfaf815821a0098dc13d064bba535} 
+void {\bfseries black\+\_\+castle\+\_\+check} ()
+\begin{DoxyCompactList}\small\item\em Checks whether Black can castle this turn. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_a01c17c5cf1fa0fabe5a107ec57d3fee5}\label{classBoard_a01c17c5cf1fa0fabe5a107ec57d3fee5} 
+void {\bfseries update\+\_\+all\+\_\+ad} ()
+\begin{DoxyCompactList}\small\item\em Update both White and Black\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision maps. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_af54c56c578ee41fbfa05faaa2fc0e097}\label{classBoard_af54c56c578ee41fbfa05faaa2fc0e097} 
+void {\bfseries update\+\_\+white\+\_\+ad} ()
+\begin{DoxyCompactList}\small\item\em Updates White\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision maps. \end{DoxyCompactList}\item 
+\Hypertarget{classBoard_adccf89f71f16154b145de7fb66d323b6}\label{classBoard_adccf89f71f16154b145de7fb66d323b6} 
+void {\bfseries update\+\_\+black\+\_\+ad} ()
+\begin{DoxyCompactList}\small\item\em Updates Black\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision maps. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_ac5978e52c28105b21d5ab63c7ad7ef92}{queen\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate the Queen\textquotesingle{}s moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a5f309298572170f6fda424db4b55c435}{queen\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Queen\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision maps. Player is determined based on the square given. The queen uses the Bishop and Rook\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} maps. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_adffb02e42edd4bf1b1eb8ed94f12a53f}{rook\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate the Rook\textquotesingle{}s moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a7aed1868e10ea16c34236d2078591c24}{rook\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Rook\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a1ff653b679888e8c3fafa2b5fe215f28}{bishop\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate the Bishop\textquotesingle{}s moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_af2aaae83fbe7186d64c91c113bdc302d}{bishop\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Bishop\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_ad5b70ff0304a76cb4f65c53679bf7915}{king\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate the King\textquotesingle{}s moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a9129ed2e94dc8e2b17378310f18e03df}{king\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the King\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_aac4c2571ab0a0875abc11c67c66d74c0}{knight\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate the Knight\textquotesingle{}s moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a5abdb28c1ad42fe1f50c1e4447e6557c}{knight\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Knight\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a606fa0a82be93534381b75e929ae260b}{pawn\+\_\+moves}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate Pawn moves from a specific square. Player is determined based on the square given. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a0d06d506b346c071580760b91ed2db30}{check\+\_\+up}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate white pawn movement. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a0166fafe649d4be206e6bfc101f7a14c}{check\+\_\+up\+\_\+diagonal}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate white pawn captures. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a9d3900f07961ead9d9eb1884fb3e3d28}{check\+\_\+down}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate black pawn movement. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_af18b2cb996f869397e6a55d87767991d}{check\+\_\+down\+\_\+diagonal}} (int rank, int file, std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&moves)
+\begin{DoxyCompactList}\small\item\em Generate black pawn captures. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_ab2a7b176ad6e0ce493160c9fca57b1fa}{white\+\_\+pawn\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Pawn\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. White. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBoard_a1feeae281284936903dd932487e20d81}{black\+\_\+pawn\+\_\+ad}} (int rank, int file)
+\begin{DoxyCompactList}\small\item\em Update the Pawn\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Black. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classBoard_abce8bb3365db9f810a723e0bbcab7694}{\+\_\+w\+K\+\_\+rank}}
+\item 
+\Hypertarget{classBoard_aeda277644816210c626aa237f7a311d1}\label{classBoard_aeda277644816210c626aa237f7a311d1} 
+int {\bfseries \+\_\+w\+K\+\_\+file}
+\item 
+\Hypertarget{classBoard_af00232f0eb464208d351c6f366a348e8}\label{classBoard_af00232f0eb464208d351c6f366a348e8} 
+int {\bfseries \+\_\+b\+K\+\_\+rank}
+\item 
+\Hypertarget{classBoard_a022fa4b8d78c018a802d104648a5c554}\label{classBoard_a022fa4b8d78c018a802d104648a5c554} 
+int {\bfseries \+\_\+b\+K\+\_\+file}
+\item 
+bool \mbox{\hyperlink{classBoard_a9682fcd631a4290e325270ca0cbc93af}{\+\_\+in\+\_\+check}} = false
+\item 
+int \mbox{\hyperlink{classBoard_aac8523733fc477d1fb791e4bc4837ebb}{\+\_\+turn}} = WHITE
+\item 
+bool \mbox{\hyperlink{classBoard_a03172b3ea048e9114b87a5139f59a7b4}{playing}} = true
+\item 
+bool \mbox{\hyperlink{classBoard_af03e670c90c7ce70658266e56d8b000d}{\+\_\+white\+\_\+castling\+\_\+allowed}} = true
+\item 
+bool \mbox{\hyperlink{classBoard_a611413b89d26ec31a930c259a2cf6047}{\+\_\+w\+RA\+\_\+moved}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a8fdf623ab8cd0b01551ba6bbe58cebb9}{\+\_\+w\+RH\+\_\+moved}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a4d6e654636cf2899a312883e1a839637}{\+\_\+w\+KK\+\_\+castle\+\_\+allowed}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a3c768ff1cc9433bed7bdfa4ef2ad05f8}{\+\_\+w\+KQ\+\_\+castle\+\_\+allowed}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a240e2216b89794b52b990e8baf031932}{\+\_\+black\+\_\+castling\+\_\+allowed}} = true
+\item 
+bool \mbox{\hyperlink{classBoard_aaa05a1402a85c418f55ea65365d5e36d}{\+\_\+b\+RA\+\_\+moved}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a283d845ad46ba7e273d67ff882135857}{\+\_\+b\+RH\+\_\+moved}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a633d91a943f8ef181e868af726ea1484}{\+\_\+b\+KK\+\_\+castle\+\_\+allowed}} = false
+\item 
+bool \mbox{\hyperlink{classBoard_a9ad4a270cdad02547a5058115d2cf8c1}{\+\_\+b\+KQ\+\_\+castle\+\_\+allowed}} = false
+\item 
+int \mbox{\hyperlink{classBoard_aaa80913aaf3489ddc5127ed6c573629f}{\+\_\+doublestep\+\_\+on\+\_\+file}} = -\/1
+\item 
+bool \mbox{\hyperlink{classBoard_aeb62cea48908bdadcf17132ee16c6644}{passantable}} = false
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \mbox{\hyperlink{classBoard_ade14fa659ba0e9a0dfdbca76d3c6e1ab}{legal\+\_\+moves}}
+\item 
+int \mbox{\hyperlink{classBoard_a4c5d26dbdab72f14e75c8f2c51863aad}{\+\_\+board}} \mbox{[}8\mbox{]}\mbox{[}8\mbox{]}
+\begin{DoxyCompactList}\small\item\em The state of the board. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classBoard_a8bfc9960b1b7bba29bfe8773afc60c6f}{\+\_\+white\+\_\+sees\+\_\+squares}} \mbox{[}8\mbox{]}\mbox{[}8\mbox{]}
+\begin{DoxyCompactList}\small\item\em White\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Every tile with a value above 0 is seen by a white piece. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classBoard_a619294275b6c0ad097f073d51ef471bf}{\+\_\+black\+\_\+sees\+\_\+squares}} \mbox{[}8\mbox{]}\mbox{[}8\mbox{]}
+\begin{DoxyCompactList}\small\item\em Black\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Every tile with a value above 0 is seen by a black piece. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The chessboard itself. Keeps track of nearly everything. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classBoard_a8808ef0839020e9ee22d5ef6d611a095}\label{classBoard_a8808ef0839020e9ee22d5ef6d611a095} 
+\index{Board@{Board}!alphabeta@{alphabeta}}
+\index{alphabeta@{alphabeta}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{alphabeta()}{alphabeta()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMinimaxValue}{Minimax\+Value}} Board\+::alphabeta (\begin{DoxyParamCaption}\item[{int}]{depth,  }\item[{float}]{alpha,  }\item[{float}]{beta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+An algorithm that FILL THIS. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth} & How many turns down the line is checked. \\
+\hline
+{\em alpha} & \\
+\hline
+{\em beta} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classMinimaxValue}{Minimax\+Value} The value of the current board position. 
+\end{DoxyReturn}
+\Hypertarget{classBoard_af2aaae83fbe7186d64c91c113bdc302d}\label{classBoard_af2aaae83fbe7186d64c91c113bdc302d} 
+\index{Board@{Board}!bishop\_ad@{bishop\_ad}}
+\index{bishop\_ad@{bishop\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{bishop\_ad()}{bishop\_ad()}}
+{\footnotesize\ttfamily void Board\+::bishop\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Bishop\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Bishop is on \\
+\hline
+{\em file} & The file the Bishop is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a1ff653b679888e8c3fafa2b5fe215f28}\label{classBoard_a1ff653b679888e8c3fafa2b5fe215f28} 
+\index{Board@{Board}!bishop\_moves@{bishop\_moves}}
+\index{bishop\_moves@{bishop\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{bishop\_moves()}{bishop\_moves()}}
+{\footnotesize\ttfamily void Board\+::bishop\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate the Bishop\textquotesingle{}s moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Bishop is on \\
+\hline
+{\em file} & The file the Bishop is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a1feeae281284936903dd932487e20d81}\label{classBoard_a1feeae281284936903dd932487e20d81} 
+\index{Board@{Board}!black\_pawn\_ad@{black\_pawn\_ad}}
+\index{black\_pawn\_ad@{black\_pawn\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{black\_pawn\_ad()}{black\_pawn\_ad()}}
+{\footnotesize\ttfamily void Board\+::black\+\_\+pawn\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Pawn\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Black. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a9d3900f07961ead9d9eb1884fb3e3d28}\label{classBoard_a9d3900f07961ead9d9eb1884fb3e3d28} 
+\index{Board@{Board}!check\_down@{check\_down}}
+\index{check\_down@{check\_down}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{check\_down()}{check\_down()}}
+{\footnotesize\ttfamily void Board\+::check\+\_\+down (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate black pawn movement. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_af18b2cb996f869397e6a55d87767991d}\label{classBoard_af18b2cb996f869397e6a55d87767991d} 
+\index{Board@{Board}!check\_down\_diagonal@{check\_down\_diagonal}}
+\index{check\_down\_diagonal@{check\_down\_diagonal}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{check\_down\_diagonal()}{check\_down\_diagonal()}}
+{\footnotesize\ttfamily void Board\+::check\+\_\+down\+\_\+diagonal (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate black pawn captures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a0d06d506b346c071580760b91ed2db30}\label{classBoard_a0d06d506b346c071580760b91ed2db30} 
+\index{Board@{Board}!check\_up@{check\_up}}
+\index{check\_up@{check\_up}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{check\_up()}{check\_up()}}
+{\footnotesize\ttfamily void Board\+::check\+\_\+up (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate white pawn movement. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a0166fafe649d4be206e6bfc101f7a14c}\label{classBoard_a0166fafe649d4be206e6bfc101f7a14c} 
+\index{Board@{Board}!check\_up\_diagonal@{check\_up\_diagonal}}
+\index{check\_up\_diagonal@{check\_up\_diagonal}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{check\_up\_diagonal()}{check\_up\_diagonal()}}
+{\footnotesize\ttfamily void Board\+::check\+\_\+up\+\_\+diagonal (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate white pawn captures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a65efea2522fe38d043130a09d826f698}\label{classBoard_a65efea2522fe38d043130a09d826f698} 
+\index{Board@{Board}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{evaluate()}{evaluate()}}
+{\footnotesize\ttfamily float Board\+::evaluate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Evaluates the current position on the board. 
+
+\begin{DoxyReturn}{Returns}
+float The value of the current position 
+\end{DoxyReturn}
+\Hypertarget{classBoard_ad106901656ae55146012daca27677bcc}\label{classBoard_ad106901656ae55146012daca27677bcc} 
+\index{Board@{Board}!evaluate\_result@{evaluate\_result}}
+\index{evaluate\_result@{evaluate\_result}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{evaluate\_result()}{evaluate\_result()}}
+{\footnotesize\ttfamily float Board\+::evaluate\+\_\+result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Evaluates the end of a game. Called when no legal moves remain. 
+
+\begin{DoxyReturn}{Returns}
+float Determines the outcome of the game. 0 for Draw, 100000 for White Win, -\/100000 for Black Win. 
+\end{DoxyReturn}
+\Hypertarget{classBoard_a492dc2c270931e8bf7157efea74671b1}\label{classBoard_a492dc2c270931e8bf7157efea74671b1} 
+\index{Board@{Board}!get\_moves@{get\_moves}}
+\index{get\_moves@{get\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{get\_moves()}{get\_moves()}}
+{\footnotesize\ttfamily void Board\+::get\+\_\+moves (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get all legal moves on this turn. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em moves} & The \doxylink{classMove}{Move} vector to store the moves in. The vector should not have any data. It will be cleared. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_aa4a8ca2d111dadfe089748d9823074cf}\label{classBoard_aa4a8ca2d111dadfe089748d9823074cf} 
+\index{Board@{Board}!get\_raw\_moves@{get\_raw\_moves}}
+\index{get\_raw\_moves@{get\_raw\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{get\_raw\_moves()}{get\_raw\_moves()}}
+{\footnotesize\ttfamily void Board\+::get\+\_\+raw\+\_\+moves (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get all pseudo-\/legal moves on this turn. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em moves} & The \doxylink{classMove}{Move} vector to store the moves in. The vector should not have any data. It will be cleared. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a008c581be78f5ca81d98d0c779ee1919}\label{classBoard_a008c581be78f5ca81d98d0c779ee1919} 
+\index{Board@{Board}!is\_in\_check@{is\_in\_check}}
+\index{is\_in\_check@{is\_in\_check}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{is\_in\_check()}{is\_in\_check()}}
+{\footnotesize\ttfamily bool Board\+::is\+\_\+in\+\_\+check (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines whether the current player is in check or not. 
+
+\begin{DoxyReturn}{Returns}
+true King is in check 
+
+false King is not in check 
+\end{DoxyReturn}
+\Hypertarget{classBoard_a9129ed2e94dc8e2b17378310f18e03df}\label{classBoard_a9129ed2e94dc8e2b17378310f18e03df} 
+\index{Board@{Board}!king\_ad@{king\_ad}}
+\index{king\_ad@{king\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{king\_ad()}{king\_ad()}}
+{\footnotesize\ttfamily void Board\+::king\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the King\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the King is on \\
+\hline
+{\em file} & The file the King is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_ad5b70ff0304a76cb4f65c53679bf7915}\label{classBoard_ad5b70ff0304a76cb4f65c53679bf7915} 
+\index{Board@{Board}!king\_moves@{king\_moves}}
+\index{king\_moves@{king\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{king\_moves()}{king\_moves()}}
+{\footnotesize\ttfamily void Board\+::king\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate the King\textquotesingle{}s moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the King is on \\
+\hline
+{\em file} & The file the King is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a5abdb28c1ad42fe1f50c1e4447e6557c}\label{classBoard_a5abdb28c1ad42fe1f50c1e4447e6557c} 
+\index{Board@{Board}!knight\_ad@{knight\_ad}}
+\index{knight\_ad@{knight\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{knight\_ad()}{knight\_ad()}}
+{\footnotesize\ttfamily void Board\+::knight\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Knight\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Knight is on \\
+\hline
+{\em file} & The file the Knight is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_aac4c2571ab0a0875abc11c67c66d74c0}\label{classBoard_aac4c2571ab0a0875abc11c67c66d74c0} 
+\index{Board@{Board}!knight\_moves@{knight\_moves}}
+\index{knight\_moves@{knight\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{knight\_moves()}{knight\_moves()}}
+{\footnotesize\ttfamily void Board\+::knight\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate the Knight\textquotesingle{}s moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Knight is on \\
+\hline
+{\em file} & The file the Knight is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a451250cff6a9f40b89862a3de24729e1}\label{classBoard_a451250cff6a9f40b89862a3de24729e1} 
+\index{Board@{Board}!make\_move@{make\_move}}
+\index{make\_move@{make\_move}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{make\_move()}{make\_move()}}
+{\footnotesize\ttfamily void Board\+::make\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMove}{Move}} \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Handles computer made moves. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The move to be made \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a6a2c0d29ac76281d55c12c3861347f54}\label{classBoard_a6a2c0d29ac76281d55c12c3861347f54} 
+\index{Board@{Board}!material@{material}}
+\index{material@{material}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{material()}{material()}}
+{\footnotesize\ttfamily float Board\+::material (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Calculates the current material value of the board. Includes adjustments to the value for a piece\textquotesingle{}s position on the board. 
+
+See piece square tables for details about board position and value adjustments \begin{DoxyReturn}{Returns}
+float The overall material value of the board. 
+\end{DoxyReturn}
+\Hypertarget{classBoard_a58091b6e0e5d759e296af79f4a947250}\label{classBoard_a58091b6e0e5d759e296af79f4a947250} 
+\index{Board@{Board}!minimax@{minimax}}
+\index{minimax@{minimax}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{minimax()}{minimax()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMinimaxValue}{Minimax\+Value}} Board\+::minimax (\begin{DoxyParamCaption}\item[{int}]{depth }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+An algorithm that through every possible move and returns the best move for the respective player (up to the depth given) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth} & How many turns down the line is checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classMinimaxValue}{Minimax\+Value} The value of the current board position. 
+\end{DoxyReturn}
+\Hypertarget{classBoard_a606fa0a82be93534381b75e929ae260b}\label{classBoard_a606fa0a82be93534381b75e929ae260b} 
+\index{Board@{Board}!pawn\_moves@{pawn\_moves}}
+\index{pawn\_moves@{pawn\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{pawn\_moves()}{pawn\_moves()}}
+{\footnotesize\ttfamily void Board\+::pawn\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate Pawn moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_ad11626fc284ff99f1659e45a8b03cc65}\label{classBoard_ad11626fc284ff99f1659e45a8b03cc65} 
+\index{Board@{Board}!player\_move@{player\_move}}
+\index{player\_move@{player\_move}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{player\_move()}{player\_move()}}
+{\footnotesize\ttfamily void Board\+::player\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMove}{Move}} \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Handles player made moves. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The move to be made \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a6d3c8ecc87292e9891a108930be41570}\label{classBoard_a6d3c8ecc87292e9891a108930be41570} 
+\index{Board@{Board}!position@{position}}
+\index{position@{position}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily float Board\+::position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Rudimentary evaluation of the overall positioning on the board. Relies on \textquotesingle{}attack defense\textquotesingle{} vision maps. 
+
+\begin{DoxyReturn}{Returns}
+float Which player\textquotesingle{}s pieces see more of the board and by how much. 
+\end{DoxyReturn}
+\Hypertarget{classBoard_a5f309298572170f6fda424db4b55c435}\label{classBoard_a5f309298572170f6fda424db4b55c435} 
+\index{Board@{Board}!queen\_ad@{queen\_ad}}
+\index{queen\_ad@{queen\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{queen\_ad()}{queen\_ad()}}
+{\footnotesize\ttfamily void Board\+::queen\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Queen\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision maps. Player is determined based on the square given. The queen uses the Bishop and Rook\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} maps. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Queen is on \\
+\hline
+{\em file} & The file the Queen is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_ac5978e52c28105b21d5ab63c7ad7ef92}\label{classBoard_ac5978e52c28105b21d5ab63c7ad7ef92} 
+\index{Board@{Board}!queen\_moves@{queen\_moves}}
+\index{queen\_moves@{queen\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{queen\_moves()}{queen\_moves()}}
+{\footnotesize\ttfamily void Board\+::queen\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate the Queen\textquotesingle{}s moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Queen is on \\
+\hline
+{\em file} & The file the Queen is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_a7aed1868e10ea16c34236d2078591c24}\label{classBoard_a7aed1868e10ea16c34236d2078591c24} 
+\index{Board@{Board}!rook\_ad@{rook\_ad}}
+\index{rook\_ad@{rook\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{rook\_ad()}{rook\_ad()}}
+{\footnotesize\ttfamily void Board\+::rook\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Rook\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Rook is on \\
+\hline
+{\em file} & The file the Rook is on \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_adffb02e42edd4bf1b1eb8ed94f12a53f}\label{classBoard_adffb02e42edd4bf1b1eb8ed94f12a53f} 
+\index{Board@{Board}!rook\_moves@{rook\_moves}}
+\index{rook\_moves@{rook\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{rook\_moves()}{rook\_moves()}}
+{\footnotesize\ttfamily void Board\+::rook\+\_\+moves (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classMove}{Move}} $>$ \&}]{moves }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate the Rook\textquotesingle{}s moves from a specific square. Player is determined based on the square given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Rook is on \\
+\hline
+{\em file} & The file the Rook is on \\
+\hline
+{\em moves} & The \doxylink{classMove}{Move} vector the pseudo-\/legal moves are added to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classBoard_ab2a7b176ad6e0ce493160c9fca57b1fa}\label{classBoard_ab2a7b176ad6e0ce493160c9fca57b1fa} 
+\index{Board@{Board}!white\_pawn\_ad@{white\_pawn\_ad}}
+\index{white\_pawn\_ad@{white\_pawn\_ad}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{white\_pawn\_ad()}{white\_pawn\_ad()}}
+{\footnotesize\ttfamily void Board\+::white\+\_\+pawn\+\_\+ad (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update the Pawn\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. White. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rank} & The rank the Pawn is on \\
+\hline
+{\em file} & The file the Pawn is on \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classBoard_a633d91a943f8ef181e868af726ea1484}\label{classBoard_a633d91a943f8ef181e868af726ea1484} 
+\index{Board@{Board}!\_bKK\_castle\_allowed@{\_bKK\_castle\_allowed}}
+\index{\_bKK\_castle\_allowed@{\_bKK\_castle\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_bKK\_castle\_allowed}{\_bKK\_castle\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+b\+KK\+\_\+castle\+\_\+allowed = false}
+
+Determines whether Kingside castling is allowed for Black on this turn \Hypertarget{classBoard_a9ad4a270cdad02547a5058115d2cf8c1}\label{classBoard_a9ad4a270cdad02547a5058115d2cf8c1} 
+\index{Board@{Board}!\_bKQ\_castle\_allowed@{\_bKQ\_castle\_allowed}}
+\index{\_bKQ\_castle\_allowed@{\_bKQ\_castle\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_bKQ\_castle\_allowed}{\_bKQ\_castle\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+b\+KQ\+\_\+castle\+\_\+allowed = false}
+
+Determines whether Queenside castling is allowed for Black on this turn \Hypertarget{classBoard_a240e2216b89794b52b990e8baf031932}\label{classBoard_a240e2216b89794b52b990e8baf031932} 
+\index{Board@{Board}!\_black\_castling\_allowed@{\_black\_castling\_allowed}}
+\index{\_black\_castling\_allowed@{\_black\_castling\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_black\_castling\_allowed}{\_black\_castling\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+black\+\_\+castling\+\_\+allowed = true}
+
+Determines whether castling is allowed at all for Black \Hypertarget{classBoard_a619294275b6c0ad097f073d51ef471bf}\label{classBoard_a619294275b6c0ad097f073d51ef471bf} 
+\index{Board@{Board}!\_black\_sees\_squares@{\_black\_sees\_squares}}
+\index{\_black\_sees\_squares@{\_black\_sees\_squares}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_black\_sees\_squares}{\_black\_sees\_squares}}
+{\footnotesize\ttfamily int Board\+::\+\_\+black\+\_\+sees\+\_\+squares\mbox{[}8\mbox{]}\mbox{[}8\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \}}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Black\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Every tile with a value above 0 is seen by a black piece. 
+
+\Hypertarget{classBoard_a4c5d26dbdab72f14e75c8f2c51863aad}\label{classBoard_a4c5d26dbdab72f14e75c8f2c51863aad} 
+\index{Board@{Board}!\_board@{\_board}}
+\index{\_board@{\_board}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_board}{\_board}}
+{\footnotesize\ttfamily int Board\+::\+\_\+board\mbox{[}8\mbox{]}\mbox{[}8\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \ \{\ bR,\ bN,\ bB,\ bQ,\ bK,\ bB,\ bN,\ bR\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ bP,\ bP,\ bP,\ bP,\ bP,\ bP,\ bP,\ bP\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA,\ NA\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ wP,\ wP,\ wP,\ wP,\ wP,\ wP,\ wP,\ wP\ \},}
+\DoxyCodeLine{\ \ \ \ \ \{\ wR,\ wN,\ wB,\ wQ,\ wK,\ wB,\ wN,\ wR\ \}}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+The state of the board. 
+
+\Hypertarget{classBoard_aaa05a1402a85c418f55ea65365d5e36d}\label{classBoard_aaa05a1402a85c418f55ea65365d5e36d} 
+\index{Board@{Board}!\_bRA\_moved@{\_bRA\_moved}}
+\index{\_bRA\_moved@{\_bRA\_moved}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_bRA\_moved}{\_bRA\_moved}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+b\+RA\+\_\+moved = false}
+
+Checks whether Black\textquotesingle{}s Rook on file A has been moved. If true, Queenside Castling is unavailable for the rest of the game (Black) \Hypertarget{classBoard_a283d845ad46ba7e273d67ff882135857}\label{classBoard_a283d845ad46ba7e273d67ff882135857} 
+\index{Board@{Board}!\_bRH\_moved@{\_bRH\_moved}}
+\index{\_bRH\_moved@{\_bRH\_moved}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_bRH\_moved}{\_bRH\_moved}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+b\+RH\+\_\+moved = false}
+
+Checks whether Black\textquotesingle{}s Rook on file H has been moved. If true, Kingside Castling is unavailable for the rest of the game (Black) \Hypertarget{classBoard_aaa80913aaf3489ddc5127ed6c573629f}\label{classBoard_aaa80913aaf3489ddc5127ed6c573629f} 
+\index{Board@{Board}!\_doublestep\_on\_file@{\_doublestep\_on\_file}}
+\index{\_doublestep\_on\_file@{\_doublestep\_on\_file}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_doublestep\_on\_file}{\_doublestep\_on\_file}}
+{\footnotesize\ttfamily int Board\+::\+\_\+doublestep\+\_\+on\+\_\+file = -\/1}
+
+Which file a pawn has moved two steps on. See the FILE enum to see which file the int is \Hypertarget{classBoard_a9682fcd631a4290e325270ca0cbc93af}\label{classBoard_a9682fcd631a4290e325270ca0cbc93af} 
+\index{Board@{Board}!\_in\_check@{\_in\_check}}
+\index{\_in\_check@{\_in\_check}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_in\_check}{\_in\_check}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+in\+\_\+check = false}
+
+Keeps track of whether the (current player\textquotesingle{}s) king is in check or not. \Hypertarget{classBoard_aac8523733fc477d1fb791e4bc4837ebb}\label{classBoard_aac8523733fc477d1fb791e4bc4837ebb} 
+\index{Board@{Board}!\_turn@{\_turn}}
+\index{\_turn@{\_turn}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_turn}{\_turn}}
+{\footnotesize\ttfamily int Board\+::\+\_\+turn = WHITE}
+
+Keeps track of the current player \Hypertarget{classBoard_af03e670c90c7ce70658266e56d8b000d}\label{classBoard_af03e670c90c7ce70658266e56d8b000d} 
+\index{Board@{Board}!\_white\_castling\_allowed@{\_white\_castling\_allowed}}
+\index{\_white\_castling\_allowed@{\_white\_castling\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_white\_castling\_allowed}{\_white\_castling\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+white\+\_\+castling\+\_\+allowed = true}
+
+Determines whether castling is allowed at all for White \Hypertarget{classBoard_a8bfc9960b1b7bba29bfe8773afc60c6f}\label{classBoard_a8bfc9960b1b7bba29bfe8773afc60c6f} 
+\index{Board@{Board}!\_white\_sees\_squares@{\_white\_sees\_squares}}
+\index{\_white\_sees\_squares@{\_white\_sees\_squares}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_white\_sees\_squares}{\_white\_sees\_squares}}
+{\footnotesize\ttfamily int Board\+::\+\_\+white\+\_\+sees\+\_\+squares\mbox{[}8\mbox{]}\mbox{[}8\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \},}
+\DoxyCodeLine{\ \ \ \ \{\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ \}}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+White\textquotesingle{}s \textquotesingle{}attack defense\textquotesingle{} vision map. Every tile with a value above 0 is seen by a white piece. 
+
+\Hypertarget{classBoard_abce8bb3365db9f810a723e0bbcab7694}\label{classBoard_abce8bb3365db9f810a723e0bbcab7694} 
+\index{Board@{Board}!\_wK\_rank@{\_wK\_rank}}
+\index{\_wK\_rank@{\_wK\_rank}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_wK\_rank}{\_wK\_rank}}
+{\footnotesize\ttfamily int Board\+::\+\_\+w\+K\+\_\+rank}
+
+Stores the position of the kings\textquotesingle{} ranks and files \Hypertarget{classBoard_a4d6e654636cf2899a312883e1a839637}\label{classBoard_a4d6e654636cf2899a312883e1a839637} 
+\index{Board@{Board}!\_wKK\_castle\_allowed@{\_wKK\_castle\_allowed}}
+\index{\_wKK\_castle\_allowed@{\_wKK\_castle\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_wKK\_castle\_allowed}{\_wKK\_castle\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+w\+KK\+\_\+castle\+\_\+allowed = false}
+
+Determines whether Kingside castling is allowed for White on this turn \Hypertarget{classBoard_a3c768ff1cc9433bed7bdfa4ef2ad05f8}\label{classBoard_a3c768ff1cc9433bed7bdfa4ef2ad05f8} 
+\index{Board@{Board}!\_wKQ\_castle\_allowed@{\_wKQ\_castle\_allowed}}
+\index{\_wKQ\_castle\_allowed@{\_wKQ\_castle\_allowed}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_wKQ\_castle\_allowed}{\_wKQ\_castle\_allowed}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+w\+KQ\+\_\+castle\+\_\+allowed = false}
+
+Determines whether Queenside castling is allowed for White on this turn \Hypertarget{classBoard_a611413b89d26ec31a930c259a2cf6047}\label{classBoard_a611413b89d26ec31a930c259a2cf6047} 
+\index{Board@{Board}!\_wRA\_moved@{\_wRA\_moved}}
+\index{\_wRA\_moved@{\_wRA\_moved}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_wRA\_moved}{\_wRA\_moved}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+w\+RA\+\_\+moved = false}
+
+Checks whether White\textquotesingle{}s Rook on file A has been moved. If true, Queenside Castling is unavailable for the rest of the game (White) \Hypertarget{classBoard_a8fdf623ab8cd0b01551ba6bbe58cebb9}\label{classBoard_a8fdf623ab8cd0b01551ba6bbe58cebb9} 
+\index{Board@{Board}!\_wRH\_moved@{\_wRH\_moved}}
+\index{\_wRH\_moved@{\_wRH\_moved}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{\_wRH\_moved}{\_wRH\_moved}}
+{\footnotesize\ttfamily bool Board\+::\+\_\+w\+RH\+\_\+moved = false}
+
+Checks whether White\textquotesingle{}s Rook on file H has been moved. If true, Kingside Castling is unavailable for the rest of the game (White) \Hypertarget{classBoard_ade14fa659ba0e9a0dfdbca76d3c6e1ab}\label{classBoard_ade14fa659ba0e9a0dfdbca76d3c6e1ab} 
+\index{Board@{Board}!legal\_moves@{legal\_moves}}
+\index{legal\_moves@{legal\_moves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{legal\_moves}{legal\_moves}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classMove}{Move}}$>$ Board\+::legal\+\_\+moves}
+
+Keeps track of all legal moves this turn. \Hypertarget{classBoard_aeb62cea48908bdadcf17132ee16c6644}\label{classBoard_aeb62cea48908bdadcf17132ee16c6644} 
+\index{Board@{Board}!passantable@{passantable}}
+\index{passantable@{passantable}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{passantable}{passantable}}
+{\footnotesize\ttfamily bool Board\+::passantable = false}
+
+If en passant can be played this turn. Only valid on the turn immediately after a doublestep \Hypertarget{classBoard_a03172b3ea048e9114b87a5139f59a7b4}\label{classBoard_a03172b3ea048e9114b87a5139f59a7b4} 
+\index{Board@{Board}!playing@{playing}}
+\index{playing@{playing}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{playing}{playing}}
+{\footnotesize\ttfamily bool Board\+::playing = true}
+
+Determines if the program keeps running. Changed to false upon win/draw/lose 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/bluviik/\+Documents/\+Git\+Hub/worlds-\/worst-\/chessbot/board.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,21 @@
+\doxysection{chess.\+h}
+\hypertarget{chess_8h_source}{}\label{chess_8h_source}\index{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/chess.h@{/home/bluviik/Documents/GitHub/worlds-\/worst-\/chessbot/chess.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{keyword}{enum}\ PLAYER\ \{\ WHITE,\ BLACK\ \};}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{enum}\ PIECES\ \{\ wR,\ wN,\ wB,\ wQ,\ wK,\ wP,\ NA,\ bR,\ bN,\ bB,\ bQ,\ bK,\ bP\};}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 3\ \ \ 4\ \ \ 5\ \ \ 6\ \ \ 7\ \ \ 8\ \ \ 9\ \ \ 10\ \ 11\ \ 12}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{enum}\ \_RANK\ \{\ RANK\_8,\ RANK\_7,\ RANK\_6,\ RANK\_5,\ RANK\_4,\ RANK\_3,\ RANK\_2,\ RANK\_1\ \};}
+\DoxyCodeLine{00009\ \textcolor{keyword}{enum}\ \_FILE\ \{\ FILE\_A,\ FILE\_B,\ FILE\_C,\ FILE\_D,\ FILE\_E,\ FILE\_F,\ FILE\_G,\ FILE\_H\ \};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keywordtype}{int}\ opponent(\textcolor{keywordtype}{int}\ player)\ \{}
+\DoxyCodeLine{00012\ \ \ \textcolor{keywordflow}{if}\ (player\ ==\ WHITE)\ \textcolor{keywordflow}{return}\ BLACK;}
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordflow}{return}\ WHITE;}
+\DoxyCodeLine{00014\ \};}
+\DoxyCodeLine{00015\ }
+
+\end{DoxyCode}

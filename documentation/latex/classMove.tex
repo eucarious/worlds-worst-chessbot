@@ -1,0 +1,134 @@
+\doxysection{Move Class Reference}
+\hypertarget{classMove}{}\label{classMove}\index{Move@{Move}}
+
+
+Contains key information about a specific move.  
+
+
+
+
+{\ttfamily \#include $<$move.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMove_a6f4bd2f5740fb8bbc1d39489f236f152}\label{classMove_a6f4bd2f5740fb8bbc1d39489f236f152} 
+{\bfseries Move} (int start\+\_\+rank, int start\+\_\+file, int end\+\_\+rank, int end\+\_\+file)
+\item 
+\mbox{\hyperlink{classMove_af92df24ca96ef7b02d53bdfb14ceb754}{Move}} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{classMove}{Move} object from a string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMove_ac62ca32630adba463e459109b3f9ee26}{\+\_\+move\+\_\+to\+\_\+string}} (int start\+\_\+rank, int start\+\_\+file, int end\+\_\+rank, int end\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Converts a move from ints into a string (e.\+g. (6,4,4,4) -\/\texorpdfstring{$>$}{>} (\textquotesingle{}e2e4\textquotesingle{})) \end{DoxyCompactList}\item 
+\Hypertarget{classMove_a08111b45ac76cbe3df9596a6800acb15}\label{classMove_a08111b45ac76cbe3df9596a6800acb15} 
+{\bfseries operator std\+::string} () const
+\begin{DoxyCompactList}\small\item\em Converts the move into a string. Does not transfer any special information, such as promotion or en passant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classMove_a7caf09e13ffbf53b66293338d1cc8add}{\+\_\+en\+\_\+passant}} = false
+\item 
+bool \mbox{\hyperlink{classMove_a465b6bc70cf6be29abe4b98f3bf44a58}{\+\_\+promotion}} = false
+\item 
+int \mbox{\hyperlink{classMove_acc6364120254d2a830d46ac9dfb625c8}{\+\_\+promotion\+\_\+piece}} = NA
+\item 
+std\+::string \mbox{\hyperlink{classMove_a6b095f3f3341b455ef56069340dd7d12}{move\+\_\+string}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classMove_a12525b6ed7c8186be0bee5cf78e2a49c}{Board}}
+\item 
+std\+::ostream \& \mbox{\hyperlink{classMove_a76b65288f18c4c5f90d3682bfff7200a}{operator$<$$<$}} (std\+::ostream \&out, const \mbox{\hyperlink{classMove}{Move}} \&m)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains key information about a specific move. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMove_af92df24ca96ef7b02d53bdfb14ceb754}\label{classMove_af92df24ca96ef7b02d53bdfb14ceb754} 
+\index{Move@{Move}!Move@{Move}}
+\index{Move@{Move}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{Move()}{Move()}}
+{\footnotesize\ttfamily Move\+::\+Move (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new \doxylink{classMove}{Move} object from a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The string to be converted into a move \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMove_ac62ca32630adba463e459109b3f9ee26}\label{classMove_ac62ca32630adba463e459109b3f9ee26} 
+\index{Move@{Move}!\_move\_to\_string@{\_move\_to\_string}}
+\index{\_move\_to\_string@{\_move\_to\_string}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{\_move\_to\_string()}{\_move\_to\_string()}}
+{\footnotesize\ttfamily void Move\+::\+\_\+move\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{int}]{start\+\_\+rank,  }\item[{int}]{start\+\_\+file,  }\item[{int}]{end\+\_\+rank,  }\item[{int}]{end\+\_\+file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts a move from ints into a string (e.\+g. (6,4,4,4) -\/\texorpdfstring{$>$}{>} (\textquotesingle{}e2e4\textquotesingle{})) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+\_\+rank} & The rank the move starts from \\
+\hline
+{\em start\+\_\+file} & The file the move starts from \\
+\hline
+{\em end\+\_\+rank} & The rank the move ends on \\
+\hline
+{\em end\+\_\+file} & The file the move ends on \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{classMove_a12525b6ed7c8186be0bee5cf78e2a49c}\label{classMove_a12525b6ed7c8186be0bee5cf78e2a49c} 
+\index{Move@{Move}!Board@{Board}}
+\index{Board@{Board}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{Board}{Board}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classBoard}{Board}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+Allows the \doxylink{classBoard}{Board} class to see the start and end variables \Hypertarget{classMove_a76b65288f18c4c5f90d3682bfff7200a}\label{classMove_a76b65288f18c4c5f90d3682bfff7200a} 
+\index{Move@{Move}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out,  }\item[{const \mbox{\hyperlink{classMove}{Move}} \&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+A cout override. Prints the move\textquotesingle{}s string to the console. (\textquotesingle{}a2a4\textquotesingle{}) 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classMove_a7caf09e13ffbf53b66293338d1cc8add}\label{classMove_a7caf09e13ffbf53b66293338d1cc8add} 
+\index{Move@{Move}!\_en\_passant@{\_en\_passant}}
+\index{\_en\_passant@{\_en\_passant}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{\_en\_passant}{\_en\_passant}}
+{\footnotesize\ttfamily bool Move\+::\+\_\+en\+\_\+passant = false}
+
+Whether this move is an en passant move \Hypertarget{classMove_a465b6bc70cf6be29abe4b98f3bf44a58}\label{classMove_a465b6bc70cf6be29abe4b98f3bf44a58} 
+\index{Move@{Move}!\_promotion@{\_promotion}}
+\index{\_promotion@{\_promotion}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{\_promotion}{\_promotion}}
+{\footnotesize\ttfamily bool Move\+::\+\_\+promotion = false}
+
+Whether this move has a pawn promotion \Hypertarget{classMove_acc6364120254d2a830d46ac9dfb625c8}\label{classMove_acc6364120254d2a830d46ac9dfb625c8} 
+\index{Move@{Move}!\_promotion\_piece@{\_promotion\_piece}}
+\index{\_promotion\_piece@{\_promotion\_piece}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{\_promotion\_piece}{\_promotion\_piece}}
+{\footnotesize\ttfamily int Move\+::\+\_\+promotion\+\_\+piece = NA}
+
+Which piece the pawn should be promoted to \Hypertarget{classMove_a6b095f3f3341b455ef56069340dd7d12}\label{classMove_a6b095f3f3341b455ef56069340dd7d12} 
+\index{Move@{Move}!move\_string@{move\_string}}
+\index{move\_string@{move\_string}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{move\_string}{move\_string}}
+{\footnotesize\ttfamily std\+::string Move\+::move\+\_\+string}
+
+The move in standard format. Easier to read. (\textquotesingle{}a2a4\textquotesingle{}) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/bluviik/\+Documents/\+Git\+Hub/worlds-\/worst-\/chessbot/move.\+h\end{DoxyCompactItemize}

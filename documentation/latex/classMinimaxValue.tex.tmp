@@ -1,0 +1,51 @@
+\doxysection{Minimax\+Value Class Reference}
+\hypertarget{classMinimaxValue}{}\label{classMinimaxValue}\index{MinimaxValue@{MinimaxValue}}
+
+
+Keeps track of what move is made and the value of the board after the move. Used in move generation.  
+
+
+
+
+{\ttfamily \#include $<$board.\+h$>$}
+
+
+
+Collaboration diagram for Minimax\+Value\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMinimaxValue_a48e82c2bde27a26d3dffdf08d9edf9d6}\label{classMinimaxValue_a48e82c2bde27a26d3dffdf08d9edf9d6} 
+{\bfseries Minimax\+Value} (float value, \mbox{\hyperlink{classMove}{Move}} move)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classMinimaxValue_a160d05b0db009a8fdd5880042032b265}{\+\_\+value}}
+\item 
+\mbox{\hyperlink{classMove}{Move}} \mbox{\hyperlink{classMinimaxValue_ae4c6052397f0798c3aab55d003c2c4c9}{\+\_\+move}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Keeps track of what move is made and the value of the board after the move. Used in move generation. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classMinimaxValue_ae4c6052397f0798c3aab55d003c2c4c9}\label{classMinimaxValue_ae4c6052397f0798c3aab55d003c2c4c9} 
+\index{MinimaxValue@{MinimaxValue}!\_move@{\_move}}
+\index{\_move@{\_move}!MinimaxValue@{MinimaxValue}}
+\doxysubsubsection{\texorpdfstring{\_move}{\_move}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMove}{Move}} Minimax\+Value\+::\+\_\+move}
+
+The move that was made \Hypertarget{classMinimaxValue_a160d05b0db009a8fdd5880042032b265}\label{classMinimaxValue_a160d05b0db009a8fdd5880042032b265} 
+\index{MinimaxValue@{MinimaxValue}!\_value@{\_value}}
+\index{\_value@{\_value}!MinimaxValue@{MinimaxValue}}
+\doxysubsubsection{\texorpdfstring{\_value}{\_value}}
+{\footnotesize\ttfamily float Minimax\+Value\+::\+\_\+value}
+
+The value of the position after the move 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/bluviik/\+Documents/\+Git\+Hub/worlds-\/worst-\/chessbot/board.\+h\end{DoxyCompactItemize}
