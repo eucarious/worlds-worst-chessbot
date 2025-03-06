@@ -357,31 +357,35 @@ public:
       if (piece == wK) {
         _wK_rank = s._end_rank;
         _wK_file = s._end_file;
-      }
-      if (piece == wK && s.move_string == "e1g1") {
-        std::cout << "white castled, kingside"; 
-        _board[RANK_1][FILE_H] = NA;
-        _board[RANK_1][FILE_F] = wR;
-      }
-      if (piece == wK && s.move_string == "e1c1") {
-      std::cout << "white castled, queenside"; 
-      _board[RANK_1][FILE_A] = NA;
-      _board[RANK_1][FILE_D] = wR;
+
+        if (s.move_string == "e1g1") {
+          std::cout << "white castled, kingside"; 
+          _board[RANK_1][FILE_H] = NA;
+          _board[RANK_1][FILE_F] = wR;
+        }
+        
+        if (s.move_string == "e1c1") {
+          std::cout << "white castled, queenside"; 
+          _board[RANK_1][FILE_A] = NA;
+          _board[RANK_1][FILE_D] = wR;
+        }
       }
 
       if (piece == bK) {
         _bK_rank = s._end_rank;
         _bK_file = s._end_file;
-      }
-      if (piece == bK && s.move_string == "e8g8") {
-        std::cout << "black castled, kingside"; 
-        _board[RANK_8][FILE_H] = NA;
-        _board[RANK_8][FILE_F] = bR;
-      }
-      if (piece == bK && s.move_string == "e8c8") {
-        std::cout << "black castled, queenside"; 
-        _board[RANK_8][FILE_A] = NA;
+
+        if (s.move_string == "e8g8") {
+          std::cout << "black castled, kingside"; 
+          _board[RANK_8][FILE_H] = NA;
+          _board[RANK_8][FILE_F] = bR;
+        }
+
+        if (s.move_string == "e8c8") {
+          std::cout << "black castled, queenside"; 
+          _board[RANK_8][FILE_A] = NA;
         _board[RANK_8][FILE_D] = bR;
+        }
       }
 
       if (piece == bP) {
@@ -473,29 +477,33 @@ public:
     if (piece == wK) {
       _wK_rank = s._end_rank;
       _wK_file = s._end_file;
-    }
-    if (s.move_string == "e1g1") { 
-      _board[RANK_1][FILE_H] = NA;
-      _board[RANK_1][FILE_F] = wR;
-    }
-    if (s.move_string == "e1c1") {
-      _board[RANK_1][FILE_A] = NA;
-      _board[RANK_1][FILE_D] = wR;
+     
+      if (s.move_string == "e1g1") { 
+        _board[RANK_1][FILE_H] = NA;
+        _board[RANK_1][FILE_F] = wR;
+      }
+     
+      if (s.move_string == "e1c1") {
+        _board[RANK_1][FILE_A] = NA;
+        _board[RANK_1][FILE_D] = wR;
+      }
     }
 
     if (piece == bK) {
       _bK_rank = s._end_rank;
       _bK_file = s._end_file;
+      
+      if (s.move_string == "e8g8") {
+        _board[RANK_8][FILE_H] = NA;
+        _board[RANK_8][FILE_F] = bR;
+      }
+      
+      if (s.move_string == "e8c8") {
+        _board[RANK_8][FILE_A] = NA;
+        _board[RANK_8][FILE_D] = bR;
+      }
     }
-    if (s.move_string == "e8g8") {
-      _board[RANK_8][FILE_H] = NA;
-      _board[RANK_8][FILE_F] = bR;
-    }
-    if (s.move_string == "e8c8") {
-      _board[RANK_8][FILE_A] = NA;
-      _board[RANK_8][FILE_D] = bR;
-    }
-
+      
     if (piece == bP) {
       if (s._start_rank == RANK_7 && s._end_rank == RANK_5) {
         passantable = true;
@@ -634,6 +642,14 @@ public:
   }
 
   // hot damn this guy sucks //* (i fucked up the implementation)
+  /**
+   * @brief An algorithm that  FILL THIS
+   * 
+   * @param depth How many turns down the line is checked.
+   * @param alpha 
+   * @param beta 
+   * @return MinimaxValue The value of the current board position.
+   */
   MinimaxValue alphabeta(int depth, float alpha, float beta) {
     std::vector<Move> moves;
     get_moves(moves);

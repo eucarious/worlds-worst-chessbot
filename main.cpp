@@ -37,6 +37,7 @@ int main() {
     // for the player. the cpu has a different list of moves. 
     //  (mandatory since each promotion result is a different move to the cpu)
     prev_move = help[0];
+    std::cout << "\n";
     std::cout << help[0] << ", ";
     for (int i = 1 ; i < help.size(); i++) {
       if (prev_move.move_string == help[i].move_string) {
@@ -47,61 +48,63 @@ int main() {
         prev_move = help[i];
       }
     }
-    MinimaxValue recommended;
-//    if (main_board._turn == BLACK) {
-        recommended = main_board.alphabeta(4, -9000000, 9000000);
-        // alpha beta plays weird chess. 
-        // gave up a Queen Rook fork in favour of a check
-        // something wrong in eval...?
-  //  }
-    //  recommended = main_board.minimax(2);
-    // } else {
-    //   recommended = main_board.minimax(4);
-    //}
-    // main_board.make_move(recommended._move);
-    std::cout << "\n\n" << "recommended move: ";
-    std::cout << recommended._move.move_string;
-    if (recommended._move._promotion) {
-      std::string piece_name;
-      switch (recommended._move._promotion_piece)
-      {
-        case wQ:
-          piece_name = "(Q)ueen";
-          break;
-        case bQ:
-          piece_name = "(Q)ueen";
-          break;
-        case wN:
-          piece_name = "(K)night";
-          break;
-        case bN:
-          piece_name = "(K)night";
-          break;
-        case wR:
-          piece_name = "(R)ook";
-          break;
-        case bR:
-          piece_name = "(R)ook";
-          break;
-        case wB:
-          piece_name = "(B)ishop";
-          break;
-        case bB:
-          piece_name = "(B)ishop";
-          break;
-      
 
-        default:
+
+    MinimaxValue recommended;
+    recommended = main_board.alphabeta(4, -9000000, 9000000);
+
+    // alpha beta plays weird chess. 
+    // gave up a Queen Rook fork in favour of a check
+    // something wrong in eval...?
+     
+    if (main_board._turn == BLACK) {
+      main_board.make_move(recommended._move);
+    } else {
+      std::cout << "\n\n" << "recommended move: ";
+      std::cout << recommended._move.move_string;
+      if (recommended._move._promotion) {
+        std::string piece_name;
+        switch (recommended._move._promotion_piece)
+        {
+          case wQ:
+          piece_name = "(Q)ueen";
           break;
+          case bQ:
+          piece_name = "(Q)ueen";
+          break;
+          case wN:
+          piece_name = "(K)night";
+          break;
+          case bN:
+          piece_name = "(K)night";
+          break;
+          case wR:
+          piece_name = "(R)ook";
+          break;
+          case bR:
+          piece_name = "(R)ook";
+          break;
+          case wB:
+          piece_name = "(B)ishop";
+          break;
+          case bB:
+          piece_name = "(B)ishop";
+          break;
+          
+          
+          default:
+          break;
+        }
+        std::cout << "\n promote to " << piece_name;
       }
-      std::cout << "\n promote to " << piece_name;
+      std::cout << "\n\n";
+      // std::cout << "total ab ends: " << end_of_minimax << "\n\ntotal stale/checkmates: " << no_more_moves;
+      // std::cout << "\n\nturns played: " << turns_played << "\n\n";
+      
+      std::cout << "enter a move from above: \n";
+      std::cin  >> m;
+      main_board.player_move(m);
     }
-    std::cout << "\n\n";
-    // std::cout << "total ab ends: " << end_of_minimax << "\n\ntotal stale/checkmates: " << no_more_moves;
-    // std::cout << "\n\nturns played: " << turns_played << "\n\n";
-    std::cout << "enter a move from above: \n";
-    std::cin  >> m;
-    main_board.player_move(m);
   }
 
   return 0;
