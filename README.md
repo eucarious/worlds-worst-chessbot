@@ -6,21 +6,21 @@ This gorgeous mess drove me insane over the course of 8 weeks, and now you can s
 
 ### With wonderful features like...
 
-- giving up a Rook Queen fork
+- giving up a Rook Queen fork!
 
-- alpha beta pruning
+- alpha beta pruning!
 
-- undoing moves
+- undoing moves!
 
-- not knowing how to make a checkmate
+- not knowing how to make a checkmate!
 
 
 <br><br>
 Give it up for Jurard, everyone! He really is trying his best with what I've given him.
 
-![Chessbot Jurard repeating the same two moves repeatedly](jurard.gif)
+![Chessbot Jurard repeating the same two moves repeatedly](itsjurard.gif)
 
-[A poor man's documentation](https://eucarious.github.io/worlds-worst-chessbot/html/index.html)
+[A poor man's documentation](https://eucarious.github.io/worlds-worst-chessbot/html/)
 
 ----
 
