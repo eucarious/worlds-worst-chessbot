@@ -57,8 +57,10 @@ int main() {
     // gave up a Queen Rook fork in favour of a check
     // something wrong in eval...?
      
+    // VS CPU (CPU plays Black)
     if (main_board._turn == BLACK) {
       main_board.make_move(recommended._move);
+      moves.push_back(recommended._move);
     } else {
       std::cout << "\n\n" << "recommended move: ";
       std::cout << recommended._move.move_string;

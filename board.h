@@ -13,7 +13,7 @@
 /** Total amount of turns played during this game. Currently only updated during a player's move */
 int turns_played = 0;      
 
-/** Keepsrack of all the moves made in the game. Currently only updated during a player's move. (CPU vs PLAYER with undos is currently unavailable) */
+/** Keepsrack of all the moves made in the game. */
 std::vector<Move> moves;   
 
 /**
@@ -322,15 +322,29 @@ public:
   void player_move(Move& s) {
 
     if (s.move_string == "undo") {
+      if (moves.empty()) {
+        std::cout << "\n" << "No more moves to undo" << "\n";
+        return;
+      }
       Move undo_move = moves.back();
       int piece = _board[undo_move._end_rank][undo_move._end_file];
       _board[undo_move._start_rank][undo_move._start_file] = piece;
       _board[undo_move._end_rank][undo_move._end_file] = NA;
       moves.pop_back();
       if (_turn == WHITE) { 
-        _turn = BLACK;
-        turns_played--;
+
+        undo_move = moves.back();
+        int piece = _board[undo_move._end_rank][undo_move._end_file];
+        _board[undo_move._start_rank][undo_move._start_file] = piece;
+        _board[undo_move._end_rank][undo_move._end_file] = NA;
+        moves.pop_back();
+        turns_played--; 
+        turns_played--; // for vs CPU (Black)
+
+        // _turn = BLACK;
+        // turns_played--; //for player vs player. Requires additional changes in main.
       } else { 
+        
         _turn = WHITE;
         turns_played--;
       }

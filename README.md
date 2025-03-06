@@ -25,3 +25,5 @@ Give it up for Jurard, everyone! He really is trying his best with what I've giv
 ----
 
 A 8-week chess engine made from the ground up for my Data Structures and Algorithms course.
+
+Currently configured for CPU vs Player. CPU plays Black.
