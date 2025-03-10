@@ -241,10 +241,16 @@ int main() {
       };
       
       if (game_type == 4) {
+        if (!history.empty()) {
+          if (recommended._move.move_string == history[history.size()-4].move_string) {
+            recommended = main_board.alphabeta(6, -9000000, 9000000);
+          }
+        }
         main_board.make_move(recommended._move);
+        history.push_back(recommended._move);
         turns_played++;
 
-        if (turns_played > 100) {
+        if (turns_played > 200) {
           main_board.playing = false;
         }
       }
