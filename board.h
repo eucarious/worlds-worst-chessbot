@@ -12,9 +12,10 @@
 // int no_more_moves = 0;  // a debugging variable. used to see how many win/draw/lose situations have been encountered
 /** Total amount of turns played during this game. Currently only updated during a player's move */
 int turns_played = 0;      
+int game_type = NA;
 
 /** Keepsrack of all the moves made in the game. */
-std::vector<Move> moves;   
+std::vector<Move> history;   
 
 /**
  * @brief Keeps track of what move is made and the value of the board after the move. Used in move generation. 
@@ -201,6 +202,8 @@ public:
     _wRA_moved, _wRH_moved, _bRA_moved, _bRH_moved = false;
     _white_castling_allowed, _black_castling_allowed = true;
 
+    _turn = WHITE;
+    turns_played = 0;
     update_all_ad();
     playing = true;
   }
@@ -321,23 +324,28 @@ public:
  */
   void player_move(Move& s) {
 
+    if (s.move_string == "quit") {
+      playing = false;
+      return;
+    }
+
     if (s.move_string == "undo") {
-      if (moves.empty()) {
+      if (history.empty()) {
         std::cout << "\n" << "No more moves to undo" << "\n";
         return;
       }
-      Move undo_move = moves.back();
+      Move undo_move = history.back();
       int piece = _board[undo_move._end_rank][undo_move._end_file];
       _board[undo_move._start_rank][undo_move._start_file] = piece;
       _board[undo_move._end_rank][undo_move._end_file] = NA;
-      moves.pop_back();
-      if (_turn == WHITE) { 
+      history.pop_back();
+      if (_turn == WHITE && game_type == 1) { 
 
-        undo_move = moves.back();
+        undo_move = history.back();
         int piece = _board[undo_move._end_rank][undo_move._end_file];
         _board[undo_move._start_rank][undo_move._start_file] = piece;
         _board[undo_move._end_rank][undo_move._end_file] = NA;
-        moves.pop_back();
+        history.pop_back();
         turns_played--; 
         turns_played--; // for vs CPU (Black)
 
@@ -470,7 +478,7 @@ public:
         turns_played++;
       }
 
-      moves.push_back(s);
+      history.push_back(s);
     }
   };
 

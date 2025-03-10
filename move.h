@@ -60,8 +60,23 @@ public:
    */
   Move(const std::string& s)
   {
+    // brute force arrow key input prevention
+    if (s == "\033[A" || s == "\033[B" || s == "\033[D" || s == "\033[C") {
+      // an completely illegal move
+      _start_rank = RANK_1;
+      _start_file = FILE_A;
+      _end_rank = RANK_8;
+      _end_file = FILE_B; 
+
+      move_string = "a1b8";
+
+      return;
+    }
     move_string = s;
     if (s == "undo") {
+      return;
+    }
+    if (s == "quit") {
       return;
     }
     _start_rank = 8 - (s.at(1) - '0');
