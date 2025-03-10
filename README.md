@@ -12,13 +12,13 @@ This gorgeous mess drove me insane over the course of 8 weeks, and now you can s
 
 - undoing moves!
 
-- not knowing how to make a checkmate!
-
-
-<br><br>
-Give it up for Jurard, everyone! He really is trying his best with what I've given him.
+<br>
 
 ![Chessbot Jurard repeating the same two moves repeatedly](itsjurard.gif)
+
+<br>
+
+Give it up for Jurard, everyone! He really is trying his best with what I've given him.
 
 [A poor man's documentation](https://eucarious.github.io/worlds-worst-chessbot/html/)
 
@@ -26,4 +26,4 @@ Give it up for Jurard, everyone! He really is trying his best with what I've giv
 
 A 8-week chess engine made from the ground up for my Data Structures and Algorithms course.
 
-Currently configured for CPU vs Player. CPU plays Black.
+NOTE: The CPU vs CPU mode has a tendency to repeat moves and threefold repetition isn't written in the code. Therefore a failsafe at 200 total moves has been added. 
